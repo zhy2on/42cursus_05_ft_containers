@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 19:47:03 by jihoh             #+#    #+#             */
-/*   Updated: 2022/08/28 01:35:05 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/08/28 01:50:53 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,66 @@ public:
 private:
     iterator_type _base_iterator; // A copy of the original iterator
 };
+
+// Non-member function overloads
+// relational operators
+template <class Iterator>
+bool operator==(const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (lhs.base() == rhs.base());
+}
+
+template <class Iterator>
+bool operator!=(const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (lhs.base() != rhs.base());
+}
+
+template <class Iterator>
+bool operator<(const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (lhs.base() > rhs.base());
+}
+
+template <class Iterator>
+bool operator<=(const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (lhs.base() >= rhs.base());
+}
+
+template <class Iterator>
+bool operator>(const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (lhs.base() < rhs.base());
+}
+
+template <class Iterator>
+bool operator>=(const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (lhs.base() <= rhs.base());
+}
+
+// operator+
+template <class Iterator>
+reverse_iterator<Iterator> operator+(
+    typename reverse_iterator<Iterator>::difference_type n,
+    const reverse_iterator<Iterator>& rev_it)
+{
+    return (rev_it + n);
+}
+
+// operator-
+template <class Iterator>
+typename reverse_iterator<Iterator>::difference_type operator-(
+    const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs)
+{
+    return (rhs.base() - lhs.base());
+}
 }
