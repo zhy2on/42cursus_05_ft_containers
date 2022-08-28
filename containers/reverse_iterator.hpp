@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 19:47:03 by jihoh             #+#    #+#             */
-/*   Updated: 2022/08/28 01:50:53 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/08/28 02:31:43 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,30 @@ public:
     typedef typename iterator_traits<Iterator>::reference reference;
 
     // Member functions
-    // OCCF
+    // constructor
     reverse_iterator()
-        : _base_iterator(iterator_type())
+        : _base_iterator(iterator_type())  // default (1)
     {
     }
-    explicit reverse_iterator(iterator_type it)
-        : _base_iterator(it)
-    {
-    }
-    template <class Iter>
-    reverse_iterator(const reverse_iterator<Iter>& rev_it)
-        : _base_iterator(rev_it.base())
-    {
-    }
-    ~reverse_iterator() { }
 
-    // others
-    iterator_type base() const
+    explicit reverse_iterator(iterator_type it)
+        : _base_iterator(it) // initialization (2)
+    {
+    }
+
+    template <class Iter>
+    reverse_iterator(const reverse_iterator<Iter>& rev_it) 
+        : _base_iterator(rev_it.base()) // copy (3)
+    {
+    }
+
+    // return base iterator
+    iterator_type base() const 
     {
         return (_base_iterator);
     }
 
+    // operators
     reference operator*() const
     {
         iterator_type temp = _base_iterator;
