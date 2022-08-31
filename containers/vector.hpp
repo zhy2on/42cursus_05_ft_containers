@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/08/28 17:51:10 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/08/31 15:45:58 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace ft {
 template <class T, class Alloc = std::allocator<T>>
-class vector {
+class Vector {
 public:
     typedef T value_type;
     typedef Alloc allocator_type;
@@ -27,8 +27,8 @@ public:
     typedef const value_type& const_reference;
     typedef value_type* pointer;
     typedef const value_type* const_pointer;
-    // typedef ft::vector_iterator<value_type> iterator;
-    // typedef ft::vector_iterator<const value_type> const_iterator;
+    typedef std::random_access_iterator_tag iterator;
+    typedef std::random_access_iterator_tag const_iterator;
     typedef ft::reverse_iterator<iterator> reverse_iterator;
     typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
     typedef std::ptrdiff_t difference_type;
@@ -36,22 +36,22 @@ public:
 
 public:
     // constructor
-    explicit vector(const allocator_type& alloc = allocator_type()); // default (1)
+    explicit Vector(const allocator_type& alloc = allocator_type()); // default (1)
 
-    explicit vector(size_type n, const value_type& val = value_type(),
+    explicit Vector(size_type n, const value_type& val = value_type(),
         const allocator_type& alloc = allocator_type()); // fill (2)
 
     template <class InputIterator>
-    vector(InputIterator first, InputIterator last,
+    Vector(InputIterator first, InputIterator last,
         const allocator_type& alloc = allocator_type()); // range (3)
 
-    vector(const vector& x); // copy (4)
+    Vector(const Vector& x); // copy (4)
 
     // destructor
-    ~vector();
+    ~Vector();
 
     // operator=
-    vector& operator=(const vector& x);
+    Vector& operator=(const Vector& x);
 
     // Iterators
     iterator begin();
