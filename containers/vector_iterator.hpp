@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   VectorIterator.hpp                                 :+:      :+:    :+:   */
+/*   vector_iterator.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/08/31 19:15:29 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/02 01:42:48 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,29 @@
 
 namespace ft {
 template <typename T>
-class VectorIterator : std::iterator<std::random_access_iterator_tag, T> {
+class vector_iterator : std::iterator<std::random_access_iterator_tag, T> {
 public:
     // OCCF
-    VectorIterator() // default
+    vector_iterator() // default
         : _ptr(0)
     {
     }
 
-    VectorIterator(const VectorIterator& rhs) // copy-constructor
+    vector_iterator(T* ptr) // initialization
+        : _ptr(ptr)
+    {
+    }
+
+    vector_iterator(const vector_iterator& rhs) // copy-constructor
         : _ptr(rhs._ptr)
     {
     }
 
-    virtual ~VectorIterator() // destructor
+    virtual ~vector_iterator() // destructor
     {
     }
 
-    VectorIterator& operator=(const VectorIterator& rhs) // copy-assignment
+    vector_iterator& operator=(const vector_iterator& rhs) // copy-assignment
     {
         if (this != &rhs) {
             _ptr = rhs.ptr;
@@ -41,12 +46,12 @@ public:
     }
 
     // a == b, a != b
-    bool operator==(const VectorIterator& rhs) const
+    bool operator==(const vector_iterator& rhs) const
     {
         return (_ptr == rhs._ptr);
     }
 
-    bool operator!=(const VectorIterator& rhs) const
+    bool operator!=(const vector_iterator& rhs) const
     {
         return (_ptr != rhs._ptr);
     }
@@ -63,80 +68,80 @@ public:
     }
 
     // ++a, a++
-    VectorIterator& operator++()
+    vector_iterator& operator++()
     {
-        ++ptr;
+        ++_ptr;
         return (*this);
     }
 
-    VectorIterator operator++(int)
+    vector_iterator operator++(int)
     {
-        VectorIterator tmp(*this);
+        vector_iterator tmp(*this);
         ++(*this);
         return (tmp);
     }
 
     // --a, a--
-    VectorIterator& operator--()
+    vector_iterator& operator--()
     {
-        --ptr;
+        --_ptr;
         return (*this);
     }
 
-    VectorIterator operator--(int)
+    vector_iterator operator--(int)
     {
-        VectorIterator tmp(*this);
+        vector_iterator tmp(*this);
         --(*this);
         return (tmp);
     }
 
     // a + n, a - n
-    VectorIterator operator+(const int& n) const
+    vector_iterator operator+(const int& n) const
     {
-        return (VectorIterator(_ptr + n));
+        return (vector_iterator(_ptr + n));
     }
 
-    VectorIterator operator-(const int& n) const
+    vector_iterator operator-(const int& n) const
     {
-        return (VectorIterator(_ptr - n));
+        return (vector_iterator(_ptr - n));
     }
 
     // a - b
-    std::ptr_diff_t operator-(const VectorIterator &rhs) const
+    std::ptrdiff_t operator-(const vector_iterator &rhs) const
     {
         return (_ptr - rhs._ptr);
     }
 
     // a < b, a > b
-    bool operator<(const VectorIterator &rhs) const
+    bool operator<(const vector_iterator &rhs) const
     {
         return (_ptr < rhs._ptr);
     }
 
-    bool operator>(const VectorIterator &rhs) const
+    bool operator>(const vector_iterator &rhs) const
     {
         return (_ptr > rhs._ptr);
     }
 
     // a <= b, a >= b
-    bool operator<=(const VectorIterator &rhs) const
+    bool operator<=(const vector_iterator &rhs) const
     {
         return !(this > rhs);
     }
 
-    bool operator>=(const VectorIterator &rhs) const
+    bool operator>=(const vector_iterator &rhs) const
     {
         return !(this < rhs);
     }
 
     // a += n, a -= n
-    VectorIterator& operator+=(const int &n)
+    vector_iterator& operator+=(const int &n)
     {
         _ptr += n;
         return (*this);
     }
 
-    VectorIterator& operator-=(const int &n)
+    vector_iterator& operator-=(const int &n)
     {
         _ptr -= n;
         return (*this);
@@ -149,11 +154,6 @@ public:
 
 private:
     T* _ptr;
-
-    VectorIterator(T* ptr) // initialization
-        : _ptr(ptr)
-    {
-    }
 };
 }
 
