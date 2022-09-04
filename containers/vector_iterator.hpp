@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/02 01:42:48 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/04 15:20:12 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ public:
     vector_iterator& operator=(const vector_iterator& rhs) // copy-assignment
     {
         if (this != &rhs) {
-            _ptr = rhs.ptr;
+            _ptr = rhs._ptr;
         }
         return (*this);
     }
