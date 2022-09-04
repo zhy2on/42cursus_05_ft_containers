@@ -3,9 +3,11 @@
 
 int main()
 {
-	std::vector<int> v(5, 3);
-	std::vector<int>::iterator it;
+	std::vector<int> v(5, 2);
 
-	for (it = v.begin(); it != v.end(); it++)
-		std::cout << *it << " ";
+	std::cout << v.capacity() << std::endl;
+
+	v.reserve(v.max_size() - 10);
+
+	std::cout << v.capacity() << std::endl;
 }
