@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/02 02:53:02 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/04 15:19:00 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <memory> // std::allocator
 
 namespace ft {
-template <class T, class Alloc = std::allocator<T>>
+template < class T, class Alloc = std::allocator<T> >
 class vector {
 public:
     typedef T value_type;
@@ -60,7 +60,7 @@ public:
         const allocator_type& alloc = allocator_type())
         : _allocator(alloc)
         , _capacity(last - first)
-        , _size(_capacity)
+        , _size(last - first)
     {
         _data = _allocator.allocate(_capacity);
         for (InputIterator it = first; it != last; it++)
@@ -69,7 +69,6 @@ public:
 
     vector(const vector& x)
     {
-        
     } // copy
 
     // // destructor
