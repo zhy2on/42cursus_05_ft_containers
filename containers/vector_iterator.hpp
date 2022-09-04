@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/04 19:01:02 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/04 23:33:38 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #define VECTOR_ITERATOR_HPP
 
 #include <cstddef> // std::ptrdiff_t
+#include "iterator_traits.hpp"
 
 namespace ft {
 template <typename T>
-class vector_iterator {
+class vector_iterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 public:
     // OCCF
     vector_iterator() // default
