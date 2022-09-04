@@ -6,14 +6,14 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 19:47:03 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/02 00:59:39 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/04 18:55:43 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_ITERATOR_HPP
 #define REVERSE_ITERATOR_HPP
 
-#include "iterator_traits.hpp"
+#include "type_traits.hpp"
 
 namespace ft {
 template <class Iterator>
