@@ -6,22 +6,23 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/04 23:24:27 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/05 03:09:27 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include "reverse_iterator.hpp"
 #include "type_traits.hpp"
+#include "reverse_iterator.hpp"
 #include "vector_iterator.hpp"
-#include <cstddef> // std::ptrdiff_t
-#include <memory>  // std::allocator
+#include <cstddef>   // std::ptrdiff_t
+#include <memory>    // std::allocator
+#include <stdexcept> // std::out_of_range
 
 namespace ft
 {
-    template < class T, class Alloc = std::allocator<T> >
+    template <class T, class Alloc = std::allocator<T> >
     class vector
     {
     public:
@@ -48,9 +49,11 @@ namespace ft
                         const allocator_type &alloc = allocator_type())
             : _allocator(alloc), _capacity(n), _size(n)
         {
-            _data = _allocator.allocate(n);
-            for (int i = 0; i < n; i++)
-                _data[i] = val;
+            _data = _allocator.allocate(_capacity);
+            for (size_type i = 0; i < _size; ++i)
+            {
+                _allocator.construct(_data + i, val);
+            }
         } // fill
 
         template <class InputIterator>
@@ -58,22 +61,59 @@ namespace ft
             typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
             InputIterator last,
             const allocator_type &alloc = allocator_type())
-            : _allocator(alloc), _capacity(last - first), _size(last - first)
+            : _allocator(alloc)
         {
+            _capacity = 0;
+            for (InputIterator it = first; it != last; ++it)
+            {
+                _capacity++;
+            }
             _data = _allocator.allocate(_capacity);
-            for (InputIterator it = first; it != last; it++)
-                *(_data++) = *it;
+            for (_size = 0; _size < _capacity; ++_size)
+            {
+                _allocator.construct(_data + _size, *first++);
+            }
         } // range
 
         vector(const vector &x)
+            : _allocator(x._allocator), _capacity(x._capacity), _size(x._size)
         {
+            _data = _allocator.allocate(_capacity);
+            for (size_type i = 0; i < _size; ++i)
+            {
+                _allocator.construct(_data + i, x[i]);
+            }
         } // copy
 
-        // // destructor
-        // ~vector();
+        // destructor
+        ~vector()
+        {
+            for (size_type i = 0; i < _size; ++i)
+            {
+                _allocator.destroy(_data + i);
+            }
+            _allocator.deallocate(_data, _capacity);
+        }
 
-        // // operator=
-        // vector& operator=(const vector& x);
+        // operator=
+        vector& operator=(const vector& x)
+        {
+            if (this != &x)
+            {
+                for (size_type i = 0; i < _size; ++i)
+                {
+                    _allocator.destroy(_data + i);
+                }
+                _allocator.deallocate(_data, _capacity);
+                _capacity = x._capacity;
+                _data = _allocator.allocate(_capacity);
+                for (_size = 0; _size < x._size; ++_size)
+                {
+                    _allocator.construct(_data + _size, x[_size]);
+                }
+            }
+            return (*this);
+        }
 
         // Iterators
         iterator begin()
@@ -127,6 +167,11 @@ namespace ft
             return (_allocator.max_size());
         }
 
+        size_type capacity() const
+        {
+            return (_capacity);
+        }
+
         bool empty() const
         {
             return (_size == 0);
@@ -134,12 +179,64 @@ namespace ft
 
         void reserve(size_type n)
         {
-            pointer new_cap;
-
             if (n > _capacity)
             {
-                new_cap = _allocator.allocate(n);
+                pointer tmp = _data;
+
+                _data = _allocator.allocate(n);
+                for (size_type i = 0; i < _size; i++)
+                {
+                    _allocator.construct(_data + i, tmp[i]);
+                    _allocator.destroy(tmp + i);
+                }
+                _allocator.deallocate(tmp, _capacity);
+                _capacity = n;
             }
+        }
+
+        // Element access
+        reference operator[](size_type n)
+        {
+            return (_data[n]);
+        }
+
+        const_reference operator[](size_type n) const
+        {
+            return (_data[n]);
+        }
+
+        reference at(size_type n)
+        {
+            if (n < _size)
+                return (_data[n]);
+            throw std::out_of_range("vector");
+        }
+
+        const_reference at(size_type n) const
+        {
+            if (n < _size)
+                return (_data[n]);
+            throw std::out_of_range("vector");
+        }
+
+        reference front()
+        {
+            return (_data[0]);
+        }
+
+        const_reference front() const
+        {
+            return (_data[0]);
+        }
+
+        reference back()
+        {
+            return (_data[_size - 1]);
+        }
+
+        const_reference back() const
+        {
+            return (_data[_size - 1]);
         }
 
     private:
