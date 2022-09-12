@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/04 23:33:38 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/12 20:43:48 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,148 +16,157 @@
 #include <cstddef> // std::ptrdiff_t
 #include "iterator_traits.hpp"
 
-namespace ft {
-template <typename T>
-class vector_iterator : public ft::iterator<ft::random_access_iterator_tag, T> {
-public:
-    // OCCF
-    vector_iterator() // default
-        : _ptr(0)
-    {
-    }
+namespace ft
+{
+	template <typename T>
+	class vector_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
+	{
+	public:
+		typedef typename ft::iterator_traits<vector_iterator<T> >::value_type value_type;
+		typedef typename ft::iterator_traits<vector_iterator<T> >::difference_type difference_type;
+		typedef typename ft::iterator_traits<vector_iterator<T> >::pointer pointer;
+		typedef typename ft::iterator_traits<vector_iterator<T> >::reference reference;
+		typedef typename ft::iterator_traits<vector_iterator<T> >::iterator_category iterator_category;
 
-    vector_iterator(T* ptr) // initialization
-        : _ptr(ptr)
-    {
-    }
+		// OCCF
+		vector_iterator() // default
+			: _ptr(0)
+		{
+		}
 
-    vector_iterator(const vector_iterator& rhs) // copy-constructor
-        : _ptr(rhs._ptr)
-    {
-    }
+		vector_iterator(pointer ptr) // initialization
+			: _ptr(ptr)
+		{
+		}
 
-    virtual ~vector_iterator() // destructor
-    {
-    }
+		vector_iterator(const vector_iterator &rhs) // copy-constructor
+			: _ptr(rhs._ptr)
+		{
+		}
 
-    vector_iterator& operator=(const vector_iterator& rhs) // copy-assignment
-    {
-        if (this != &rhs) {
-            _ptr = rhs._ptr;
-        }
-        return (*this);
-    }
+		virtual ~vector_iterator() // destructor
+		{
+		}
 
-    // a == b, a != b
-    bool operator==(const vector_iterator& rhs) const
-    {
-        return (_ptr == rhs._ptr);
-    }
+		vector_iterator &operator=(const vector_iterator &rhs) // copy-assignment
+		{
+			if (this != &rhs)
+			{
+				_ptr = rhs._ptr;
+			}
+			return (*this);
+		}
 
-    bool operator!=(const vector_iterator& rhs) const
-    {
-        return (_ptr != rhs._ptr);
-    }
+		// a == b, a != b
+		bool operator==(const vector_iterator &rhs) const
+		{
+			return (_ptr == rhs._ptr);
+		}
 
-    // *a, a->
-    T& operator*() const
-    {
-        return (*_ptr);
-    }
+		bool operator!=(const vector_iterator &rhs) const
+		{
+			return (_ptr != rhs._ptr);
+		}
 
-    T* operator->() const
-    {
-        return (_ptr);
-    }
+		// *a, a->
+		reference operator*() const
+		{
+			return (*_ptr);
+		}
 
-    // ++a, a++
-    vector_iterator& operator++()
-    {
-        ++_ptr;
-        return (*this);
-    }
+		pointer operator->() const
+		{
+			return (_ptr);
+		}
 
-    vector_iterator operator++(int)
-    {
-        vector_iterator tmp(*this);
-        ++(*this);
-        return (tmp);
-    }
+		// ++a, a++
+		vector_iterator &operator++()
+		{
+			++_ptr;
+			return (*this);
+		}
 
-    // --a, a--
-    vector_iterator& operator--()
-    {
-        --_ptr;
-        return (*this);
-    }
+		vector_iterator operator++(int)
+		{
+			vector_iterator tmp(*this);
+			++(*this);
+			return (tmp);
+		}
 
-    vector_iterator operator--(int)
-    {
-        vector_iterator tmp(*this);
-        --(*this);
-        return (tmp);
-    }
+		// --a, a--
+		vector_iterator &operator--()
+		{
+			--_ptr;
+			return (*this);
+		}
 
-    // a + n, a - n
-    vector_iterator operator+(const int& n) const
-    {
-        return (vector_iterator(_ptr + n));
-    }
+		vector_iterator operator--(int)
+		{
+			vector_iterator tmp(*this);
+			--(*this);
+			return (tmp);
+		}
 
-    vector_iterator operator-(const int& n) const
-    {
-        return (vector_iterator(_ptr - n));
-    }
+		// a + n, a - n
+		vector_iterator operator+(const int &n) const
+		{
+			return (vector_iterator(_ptr + n));
+		}
 
-    // a - b
-    std::ptrdiff_t operator-(const vector_iterator &rhs) const
-    {
-        return (_ptr - rhs._ptr);
-    }
+		vector_iterator operator-(const int &n) const
+		{
+			return (vector_iterator(_ptr - n));
+		}
 
-    // a < b, a > b
-    bool operator<(const vector_iterator &rhs) const
-    {
-        return (_ptr < rhs._ptr);
-    }
+		// a - b
+		difference_type operator-(const vector_iterator &rhs) const
+		{
+			return (_ptr - rhs._ptr);
+		}
 
-    bool operator>(const vector_iterator &rhs) const
-    {
-        return (_ptr > rhs._ptr);
-    }
+		// a < b, a > b
+		bool operator<(const vector_iterator &rhs) const
+		{
+			return (_ptr < rhs._ptr);
+		}
 
-    // a <= b, a >= b
-    bool operator<=(const vector_iterator &rhs) const
-    {
-        return !(this > rhs);
-    }
+		bool operator>(const vector_iterator &rhs) const
+		{
+			return (_ptr > rhs._ptr);
+		}
 
-    bool operator>=(const vector_iterator &rhs) const
-    {
-        return !(this < rhs);
-    }
+		// a <= b, a >= b
+		bool operator<=(const vector_iterator &rhs) const
+		{
+			return !(this > rhs);
+		}
 
-    // a += n, a -= n
-    vector_iterator& operator+=(const int &n)
-    {
-        _ptr += n;
-        return (*this);
-    }
+		bool operator>=(const vector_iterator &rhs) const
+		{
+			return !(this < rhs);
+		}
 
-    vector_iterator& operator-=(const int &n)
-    {
-        _ptr -= n;
-        return (*this);
-    }
+		// a += n, a -= n
+		vector_iterator &operator+=(const int &n)
+		{
+			_ptr += n;
+			return (*this);
+		}
 
-    T& operator[](const int n) const
-    {
-        return (_ptr[n]);
-    }
+		vector_iterator &operator-=(const int &n)
+		{
+			_ptr -= n;
+			return (*this);
+		}
 
-private:
-    T* _ptr;
-};
+		reference operator[](const int n) const
+		{
+			return (_ptr[n]);
+		}
+
+	private:
+		pointer _ptr;
+	};
 }
 
 #endif
