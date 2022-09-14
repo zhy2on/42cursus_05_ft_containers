@@ -11,7 +11,8 @@ int main()
 	for (int i = 0; i < 5; i++)
 		v[i] = i;
 
-	std::cout << std::endl << "#====== constructor, begin end =====#" << std::endl;
+	std::cout << std::endl
+			  << "#====== constructor, begin end =====#" << std::endl;
 	for (it = v.begin(); it != v.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
@@ -26,13 +27,14 @@ int main()
 		std::cout << *it << " ";
 	std::cout << std::endl;
 
-	std::vector<int> v4(7,7);
+	std::vector<int> v4(7, 7);
 	v4 = v2;
 	for (it = v4.begin(); it != v4.end(); it++)
-		std::cout << *it << " ";	
+		std::cout << *it << " ";
 	std::cout << std::endl;
-	
-	std::cout << std::endl << "#===== reverse iterator =====#" << std::endl;
+
+	std::cout << std::endl
+			  << "#===== reverse iterator =====#" << std::endl;
 	std::vector<int>::reverse_iterator rit;
 	for (rit = v4.rbegin(); rit != v4.rend(); rit++)
 		std::cout << *rit << " ";
@@ -43,31 +45,54 @@ int main()
 	// std::cout << vempty.front() << std::endl;
 	// std::cout << vempty.back() << std::endl;
 
-	std::cout << std::endl << "#===== assign =====#" << std::endl;
+	std::cout << std::endl
+			  << "#===== assign =====#" << std::endl;
 	v3.resize(30);
 	v4.assign(v3.begin(), v3.end());
 	for (rit = v4.rbegin(); rit != v4.rend(); rit++)
 		std::cout << *rit << " ";
 	std::cout << std::endl;
 
-	std::cout << std::endl << "#===== max_size =====#" << std::endl;
+	std::cout << std::endl
+			  << "#===== max_size =====#" << std::endl;
 	std::vector<int> iv;
 	std::vector<char> cv;
-	std::cout << iv.max_size() << "\n" << cv.max_size() << std::endl;
+	std::cout << iv.max_size() << "\n"
+			  << cv.max_size() << std::endl;
 
 	// std::cout << std::endl << "#===== reserve =====#" << std::endl;
 	// std::vector<int> v5;
 	// v5.reserve(v5.max_size() + 1);
 	// std::cout << v5.size() << std::endl;
 
-	std::cout << std::endl << "#===== resize =====#" << std::endl;
+	std::cout << std::endl
+			  << "#===== resize =====#" << std::endl;
 	std::cout << v.capacity() << std::endl;
 	v.resize(5, 100);
 	std::cout << v.capacity() << " " << v.size() << " " << v.at(4) << std::endl;
 	v.resize(30, 100);
 	std::cout << v.capacity() << " " << v.size() << " " << v.at(29) << std::endl;
-	for(int i = 0; i < 5; i++){
+	for (int i = 0; i < 5; i++)
+	{
 		v.resize(60 + i);
 		std::cout << "capacity: " << v.capacity() << std::endl;
 	}
+
+	std::cout << std::endl
+			  << "#===== push_back =====#" << std::endl;
+	v.resize(0);
+	v.push_back(11);
+	v.push_back(22);
+	v.push_back(33);
+	for (int i = 0; i < v.size(); i++)
+		std::cout << v.at(i) << " ";
+	std::cout << std::endl;
+
+	std::cout << std::endl
+			  << "#===== pop_back =====#" << std::endl;
+	v.resize(1);
+	std::cout << v.size() << std::endl;
+	v.pop_back();
+	std::cout << v.size() << std::endl;
+	// v.pop_back();
 }

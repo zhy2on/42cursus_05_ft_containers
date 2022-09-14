@@ -1,15 +1,10 @@
 #include <iostream>
 #include <vector>
+#include "../../containers/vector.hpp"
 
 int main()
 {
-    std::vector<int> v;
+    ft::vector<int> v;
 
-    std::cout << v.capacity() << std::endl;
-    v.resize(11);
-    std::cout << v.capacity() << std::endl;
-    v.resize(12);
-    std::cout << v.capacity() << std::endl;
-    v.resize(23);
-    std::cout << v.capacity() << std::endl;
+    v.resize(v.max_size() + 1);
 }
