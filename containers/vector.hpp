@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/14 18:12:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/14 20:42:49 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ namespace ft
 
 		size_type max_size() const
 		{
-			return (_allocator.max_size());
+			return ((_allocator.max_size() < PTRDIFF_MAX) ? _allocator.max_size() : PTRDIFF_MAX);
 		}
 
 		void resize(size_type n, value_type val = value_type())
@@ -297,10 +297,28 @@ namespace ft
 			_size = n;
 		}
 
-		void push_back(const value_type& val)
+		void push_back(const value_type &val)
 		{
-			if (_size == _capacity)
+			if (_size + 1 > _capacity)
+			{
 				this->resize(_size + 1, val);
+			}
+			else
+			{
+				_allocator.construct(_data + _size, val);
+				_size++;
+			}
+		}
+
+		void pop_back()
+		{
+			_allocator.destroy(_data + _size);
+			_size--;
+		}
+
+		iterator insert(iterator position, const value_type &val)
+		{
+			
 		}
 
 	private:
