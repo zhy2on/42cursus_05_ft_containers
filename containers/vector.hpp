@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/13 18:04:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/14 18:12:47 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ namespace ft
 			: _allocator(alloc), _capacity(n), _size(n)
 		{
 			_data = _allocator.allocate(_capacity);
-			for (size_type i = 0; i < _size; ++i)
+			for (size_type i = 0; i < _size; i++)
 			{
 				_allocator.construct(_data + i, val);
 			}
@@ -64,12 +64,12 @@ namespace ft
 			: _allocator(alloc)
 		{
 			_capacity = 0;
-			for (InputIterator it = first; it != last; ++it)
+			for (InputIterator it = first; it != last; it++)
 			{
 				_capacity++;
 			}
 			_data = _allocator.allocate(_capacity);
-			for (_size = 0; _size < _capacity; ++_size)
+			for (_size = 0; _size < _capacity; _size++)
 			{
 				_allocator.construct(_data + _size, *first++);
 			}
@@ -79,7 +79,7 @@ namespace ft
 			: _allocator(x._allocator), _capacity(x._capacity), _size(x._size)
 		{
 			_data = _allocator.allocate(_capacity);
-			for (size_type i = 0; i < _size; ++i)
+			for (size_type i = 0; i < _size; i++)
 			{
 				_allocator.construct(_data + i, x[i]);
 			}
@@ -88,7 +88,7 @@ namespace ft
 		// destructor
 		~vector()
 		{
-			for (size_type i = 0; i < _size; ++i)
+			for (size_type i = 0; i < _size; i++)
 			{
 				_allocator.destroy(_data + i);
 			}
@@ -100,14 +100,14 @@ namespace ft
 		{
 			if (this != &x)
 			{
-				for (size_type i = 0; i < _size; ++i)
+				for (size_type i = 0; i < _size; i++)
 				{
 					_allocator.destroy(_data + i);
 				}
 				_allocator.deallocate(_data, _capacity);
 				_capacity = x._capacity;
 				_data = _allocator.allocate(_capacity);
-				for (_size = 0; _size < x._size; ++_size)
+				for (_size = 0; _size < x._size; _size++)
 				{
 					_allocator.construct(_data + _size, x[_size]);
 				}
@@ -167,15 +167,24 @@ namespace ft
 			return (_allocator.max_size());
 		}
 
-		void resize (size_type n, value_type val = value_type())
+		void resize(size_type n, value_type val = value_type())
 		{
-			if (n < _size)
+			if (n <= _size)
 			{
-				for (size_type i = _size - n; i != _size; i++)
+				for (size_type i = _size - n; i < _size; i++)
 				{
-					
+					_allocator.destroy(_data + i);
 				}
 			}
+			else
+			{
+				this->reserve(n);
+				for (size_type i = _size; i < n; i++)
+				{
+					_allocator.construct(_data + i, val);
+				}
+			}
+			_size = n;
 		}
 
 		size_type capacity() const
@@ -194,6 +203,8 @@ namespace ft
 			{
 				pointer tmp = _data;
 
+				if (n < _capacity * 2)
+					n = _capacity * 2;
 				_data = _allocator.allocate(n);
 				for (size_type i = 0; i < _size; i++)
 				{
@@ -256,32 +267,37 @@ namespace ft
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 			InputIterator last)
 		{
-			size_type n;
+			size_type n = 0;
 
-			n = 0;
 			for (InputIterator it = first; it != last; it++)
 				n++;
-			if (n > _capacity)
-				this->reserve(n);
-			for (size_type i = 0; i < _size; i++)
-				_allocator.destroy(_data + i);
+			this->reserve(n);
 			for (size_type i = 0; i < n; i++)
+			{
+				if (i < _size)
+				{
+					_allocator.destroy(_data + i);
+				}
 				_allocator.construct(_data + i, *first++);
+			}
 			_size = n;
 		}
 
 		void assign(size_type n, const value_type &val)
 		{
-			if (n > _capacity)
-				this->reserve(n);
-			for (size_type i = 0; i < _size; i++)
-				_allocator.destroy(_data + i);
+			this->reserve(n);
 			for (size_type i = 0; i < n; i++)
+			{
+				if (i < _size)
+				{
+					_allocator.destroy(_data + i);
+				}
 				_allocator.construct(_data + i, val);
+			}
 			_size = n;
 		}
 
-		void push_back (const value_type& val)
+		void push_back(const value_type& val)
 		{
 			if (_size == _capacity)
 				this->resize(_size + 1, val);
