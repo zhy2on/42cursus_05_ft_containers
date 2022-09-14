@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/12 20:18:54 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/13 18:04:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,17 @@ namespace ft
 			return (_allocator.max_size());
 		}
 
+		void resize (size_type n, value_type val = value_type())
+		{
+			if (n < _size)
+			{
+				for (size_type i = _size - n; i != _size; i++)
+				{
+					
+				}
+			}
+		}
+
 		size_type capacity() const
 		{
 			return (_capacity);
@@ -237,6 +248,43 @@ namespace ft
 		const_reference back() const
 		{
 			return (_data[_size - 1]);
+		}
+
+		// Modifiers
+		template <class InputIterator>
+		void assign(
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+			InputIterator last)
+		{
+			size_type n;
+
+			n = 0;
+			for (InputIterator it = first; it != last; it++)
+				n++;
+			if (n > _capacity)
+				this->reserve(n);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.destroy(_data + i);
+			for (size_type i = 0; i < n; i++)
+				_allocator.construct(_data + i, *first++);
+			_size = n;
+		}
+
+		void assign(size_type n, const value_type &val)
+		{
+			if (n > _capacity)
+				this->reserve(n);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.destroy(_data + i);
+			for (size_type i = 0; i < n; i++)
+				_allocator.construct(_data + i, val);
+			_size = n;
+		}
+
+		void push_back (const value_type& val)
+		{
+			if (_size == _capacity)
+				this->resize(_size + 1, val);
 		}
 
 	private:
