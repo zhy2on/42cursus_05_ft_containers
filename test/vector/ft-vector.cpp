@@ -6,12 +6,11 @@ int main()
 	ft::vector<int> v(5, 2);
 	ft::vector<int>::iterator it;
 
-
 	// std::cout << std::endl << "#====== push back end =====#" << std::endl;
 	for (int i = 0; i < 5; i++)
 		v[i] = i;
 
-	std::cout << std::endl << "#====== begin end =====#" << std::endl;
+	std::cout << std::endl << "#====== constructor, begin end =====#" << std::endl;
 	for (it = v.begin(); it != v.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
@@ -32,13 +31,8 @@ int main()
 	for (it = v4.begin(); it != v4.end(); it++)
 		std::cout << *it << " ";	
 	std::cout << std::endl;
-	
-	std::cout << std::endl << "#====== iterator pointer =====#" << std::endl;
-	int k = 1;
-	ft::vector<int>::iterator::pointer p = &k;
-	std::cout << *p << std::endl;
 
-	std::cout << std::endl << "#===== rit =====#" << std::endl;
+	std::cout << std::endl << "#===== reverse iterator =====#" << std::endl;
 	ft::vector<int>::reverse_iterator rit;
 	for (rit = v4.rbegin(); rit != v4.rend(); rit++)
 		std::cout << *rit << " ";
@@ -50,6 +44,7 @@ int main()
 	// std::cout << vempty.back() << std::endl;
 
 	std::cout << std::endl << "#===== assign =====#" << std::endl;
+	v3.resize(30);
 	v4.assign(v3.begin(), v3.end());
 	for (rit = v4.rbegin(); rit != v4.rend(); rit++)
 		std::cout << *rit << " ";
@@ -67,9 +62,13 @@ int main()
 
 	std::cout << std::endl << "#===== resize =====#" << std::endl;
 	std::cout << v.capacity() << std::endl;
-	v.resize(5);
+	v.resize(5, 100);
 	std::cout << v.capacity() << " " << v.size() << " " << v.at(4) << std::endl;
-	v.resize(30);
+	v.resize(30, 100);
 	std::cout << v.capacity() << " " << v.size() << " " << v.at(29) << std::endl;
+	for(int i = 0; i < 5; i++){
+		v.resize(60 + i);
+		std::cout << "capacity: " << v.capacity() << std::endl;
+	}
 
 }
