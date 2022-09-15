@@ -144,6 +144,17 @@ int main()
 			  << "#===== swap =====#" << std::endl;
 	v.clear();
 	std::cout << v.size() << " " << v.capacity() << std::endl;
-	
+
+	std::cout << std::endl
+			  << "#===== get_allocator =====#" << std::endl;
+	int *p;
+	p = v.get_allocator().allocate(5);
+	for (int i = 0; i < 5; i++)
+		v.get_allocator().construct(&p[i], i);
+	std::cout << "The allocated array contains:";
+	for (int i = 0; i < 5; i++)
+		std::cout << ' ' << p[i];
+	std::cout << std::endl;
+
 	system("leaks std-vector");
 }
