@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 17:32:21 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/15 18:54:19 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,6 +395,18 @@ namespace ft
 			_size -= last - first;
 
 			return (first);
+		}
+
+		void swap(vector &x)
+		{
+			vector<T> tmp;
+
+			if (this != &x)
+			{
+				tmp = x;
+				x = *this;
+				*this = tmp;
+			}
 		}
 
 	private:
