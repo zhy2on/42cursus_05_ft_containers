@@ -123,4 +123,20 @@ int main()
 	for (int i = 0; i < v.size(); i++)
 		std::cout << v[i] << " ";
 	std::cout << std::endl;
+
+	std::cout << std::endl
+			  << "#===== swap =====#" << std::endl;
+	v.resize(10, 2);
+    v2.resize(5, 1);
+    std::cout << &v2 << std::endl;
+    std::cout << v2.size() << " " << v2.capacity() << std::endl;
+    for (int i = 0; i < v2.size(); i++)
+        std::cout << v2[i] << " ";
+    std::cout << std::endl;
+    v.swap(v2);
+    std::cout << &v2 << std::endl;
+    std::cout << v2.size() << " " << v2.capacity() << std::endl;
+    for (int i = 0; i < v2.size(); i++)
+        std::cout << v2[i] << " ";
+    std::cout << std::endl;
 }
