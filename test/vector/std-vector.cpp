@@ -95,4 +95,23 @@ int main()
 	v.pop_back();
 	std::cout << v.size() << std::endl;
 	// v.pop_back();
+
+	std::cout << std::endl
+			  << "#===== insert =====#" << std::endl;
+	v.resize(3, 100);
+	v.insert(v.begin(), 200);
+	std::cout << "insert value: " << *it << std::endl;
+	for (int i = 0; i < v.size(); i++)
+		std::cout << v[i] << " ";
+	std::cout << std::endl;
+	v.insert(v.begin(), 2, 300);
+	for (int i = 0; i < v.size(); i++)
+		std::cout << v[i] << " ";
+	std::cout << std::endl;
+	// v2.resize(5);
+	// for (int i = 0; i < v2.size(); i++)
+	// 	v2.push_back(i);
+	// v.insert(v.begin() + 2, v2.begin(), v2.end());
+	// for (int i = 0; i < v.size(); i++)
+	// 	std::cout << v[i] << " ";
 }
