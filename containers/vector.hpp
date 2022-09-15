@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 18:54:19 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/15 19:26:07 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ namespace ft
 		{
 			if (n <= _size)
 			{
-				for (size_type i = _size - n; i < _size; i++)
+				for (size_type i = n; i < _size; i++)
 				{
 					_allocator.destroy(_data + i);
 				}
@@ -408,6 +408,12 @@ namespace ft
 				*this = tmp;
 			}
 		}
+
+		void clear()
+		{
+			this->resize(0);
+		}
+		
 
 	private:
 		size_type _size;	 // current size
