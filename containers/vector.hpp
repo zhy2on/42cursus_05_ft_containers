@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 19:26:07 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/15 19:34:01 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,6 +414,11 @@ namespace ft
 			this->resize(0);
 		}
 		
+		// Allocator
+		allocator_type get_allocator() const
+		{
+			return (_allocator);
+		}
 
 	private:
 		size_type _size;	 // current size
