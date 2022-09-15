@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 16:41:03 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/15 17:32:21 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,12 +376,25 @@ namespace ft
 
 		iterator erase(iterator position)
 		{
-
+			return (erase(position, position + 1));
 		}
 
 		iterator erase(iterator first, iterator last)
 		{
-			
+			size_type i = 0;
+
+			for (iterator it = first; it != last; it++)
+			{
+				_allocator.destroy(&(*it));
+			}
+			for (iterator it = last + 1; it != this->end(); it++)
+			{
+				*(first + i) = *it;
+				i++;
+			}
+			_size -= last - first;
+
+			return (first);
 		}
 
 	private:
