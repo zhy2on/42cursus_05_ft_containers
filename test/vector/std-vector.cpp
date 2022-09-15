@@ -68,10 +68,10 @@ int main()
 	std::cout << std::endl
 			  << "#===== resize =====#" << std::endl;
 	std::cout << v.capacity() << std::endl;
-	v.resize(5, 100);
-	std::cout << v.capacity() << " " << v.size() << " " << v.at(4) << std::endl;
 	v.resize(30, 100);
 	std::cout << v.capacity() << " " << v.size() << " " << v.at(29) << std::endl;
+	v.resize(5, 100);
+	std::cout << v.capacity() << " " << v.size() << " " << v.at(4) << std::endl;
 	for (int i = 0; i < 5; i++)
 	{
 		v.resize(60 + i);
@@ -139,4 +139,11 @@ int main()
     for (int i = 0; i < v2.size(); i++)
         std::cout << v2[i] << " ";
     std::cout << std::endl;
+
+	std::cout << std::endl
+			  << "#===== swap =====#" << std::endl;
+	v.clear();
+	std::cout << v.size() << " " << v.capacity() << std::endl;
+	
+	system("leaks std-vector");
 }
