@@ -4,7 +4,8 @@
 
 int main()
 {
-    ft::vector<int> v;
+    std::vector<int> v;
 
-    v.resize(v.max_size() + 1);
+    v.resize(10, 2);
+    v.erase(v.begin() + 20);
 }

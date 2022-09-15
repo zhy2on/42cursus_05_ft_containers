@@ -108,10 +108,19 @@ int main()
 	for (int i = 0; i < v.size(); i++)
 		std::cout << v[i] << " ";
 	std::cout << std::endl;
-	// v2.resize(5);
-	// for (int i = 0; i < v2.size(); i++)
-	// 	v2.push_back(i);
-	// v.insert(v.begin() + 2, v2.begin(), v2.end());
-	// for (int i = 0; i < v.size(); i++)
-	// 	std::cout << v[i] << " ";
+
+	std::cout << std::endl
+			  << "#===== erase =====#" << std::endl;
+	// v.erase(v.begin() + v.size() + 1);
+	for (int i = 0; i < v.size(); i++)
+		std::cout << v[i] << " ";
+	std::cout << std::endl;
+	v.erase(v.begin() + 2);
+	for (int i = 0; i < v.size(); i++)
+		std::cout << v[i] << " ";
+	std::cout << std::endl;
+	v.erase(v.begin() + 1, v.begin() + 3);
+	for (int i = 0; i < v.size(); i++)
+		std::cout << v[i] << " ";
+	std::cout << std::endl;
 }
