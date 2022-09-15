@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 19:34:01 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/15 20:56:20 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "type_traits.hpp"
 #include "reverse_iterator.hpp"
 #include "vector_iterator.hpp"
+#include "algorithm.hpp"
 #include <cstddef>	 // std::ptrdiff_t
 #include <memory>	 // std::allocator
 #include <stdexcept> // std::out_of_range
@@ -426,6 +427,51 @@ namespace ft
 		allocator_type _allocator;
 		pointer _data;
 	};
+
+	// Non-member function overloads
+	// relational operators
+	template <class T, class Alloc>
+	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	template <class T, class Alloc>
+	bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (!(lhs == rhs));
+	}
+
+	template <class T, class Alloc>
+	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (ft::lexicographical_compare(lsh.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class T, class Alloc>
+	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (!(rhs < lhs)); // lhs <= rhs
+	}
+
+	template <class T, class Alloc>
+	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (rhs < lhs);
+	}
+
+	template <class T, class Alloc>
+	bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+	{
+		return (!(lhs < rhs)); // rhs <= lhs
+	}
+
+	template <class T, class Alloc>
+	void swap(vector<T, Alloc> &x, vector<T, Alloc> &y)
+	{
+		x.swap(y);
+	}
+
 } // namespace ft
 
 #endif
