@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 15:59:06 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/15 16:41:03 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,19 +329,19 @@ namespace ft
 
 		void insert(iterator position, size_type n, const value_type &val)
 		{
-			size_type position_idx = position - this->begin();
+			size_type i = position - this->begin();
 
 			if (_size + n > _capacity)
 			{
 				this->reserve(_size + n);
 			}
-			for (size_type i = _size; i > position_idx; i--)
+			for (iterator it = this->end(); it != position; it--)
 			{
-				_data[i - 1 + n] = _data[i - 1];
+				*(it - 1 + n) = *(it - 1);
 			}
-			for (size_type i = 0; i < n; i++)
+			for (size_type j = 0; j < n; j++)
 			{
-				_allocator.construct(_data + position_idx + i, val);
+				_allocator.construct(_data + i + j, val);
 			}
 			_size += n;
 		}
@@ -352,7 +352,7 @@ namespace ft
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 			InputIterator last)
 		{
-			size_type position_idx = position - this->begin();
+			size_type i = position - this->begin();
 			size_type n = 0;
 
 			for (InputIterator it = first; it != last; it++)
@@ -363,15 +363,25 @@ namespace ft
 			{
 				this->reserve(_size + n);
 			}
-			for (size_type i = _size; i > position_idx; i--)
+			for (iterator it = this->end(); it != position; it--)
 			{
-				_data[i - 1 + n] = _data[i - 1];
+				*(it - 1 + n) = *(it - 1);
 			}
-			for (size_type i = 0; i < n; i++)
+			for (size_type j = 0; j < n; j++)
 			{
-				_allocator.construct(_data + position_idx + i, *first++);
+				_allocator.construct(_data + i + j, *first++);
 			}
 			_size += n;
+		}
+
+		iterator erase(iterator position)
+		{
+
+		}
+
+		iterator erase(iterator first, iterator last)
+		{
+			
 		}
 
 	private:
