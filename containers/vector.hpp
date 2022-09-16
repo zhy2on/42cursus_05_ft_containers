@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/15 20:56:20 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/16 15:52:11 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ namespace ft
 			: _allocator(alloc), _capacity(n), _size(n)
 		{
 			_data = _allocator.allocate(_capacity);
-			for (size_type i = 0; i < _size; i++)
+			for (size_type i = 0; i < _size; ++i)
 			{
 				_allocator.construct(_data + i, val);
 			}
@@ -65,12 +65,12 @@ namespace ft
 			: _allocator(alloc)
 		{
 			_capacity = 0;
-			for (InputIterator it = first; it != last; it++)
+			for (InputIterator it = first; it != last; ++it)
 			{
-				_capacity++;
+				++_capacity;
 			}
 			_data = _allocator.allocate(_capacity);
-			for (_size = 0; _size < _capacity; _size++)
+			for (_size = 0; _size < _capacity; ++_size)
 			{
 				_allocator.construct(_data + _size, *first++);
 			}
@@ -80,7 +80,7 @@ namespace ft
 			: _allocator(x._allocator), _capacity(x._capacity), _size(x._size)
 		{
 			_data = _allocator.allocate(_capacity);
-			for (size_type i = 0; i < _size; i++)
+			for (size_type i = 0; i < _size; ++i)
 			{
 				_allocator.construct(_data + i, x[i]);
 			}
@@ -89,7 +89,7 @@ namespace ft
 		// destructor
 		~vector()
 		{
-			for (size_type i = 0; i < _size; i++)
+			for (size_type i = 0; i < _size; ++i)
 			{
 				_allocator.destroy(_data + i);
 			}
@@ -101,14 +101,14 @@ namespace ft
 		{
 			if (this != &x)
 			{
-				for (size_type i = 0; i < _size; i++)
+				for (size_type i = 0; i < _size; ++i)
 				{
 					_allocator.destroy(_data + i);
 				}
 				_allocator.deallocate(_data, _capacity);
 				_capacity = x._capacity;
 				_data = _allocator.allocate(_capacity);
-				for (_size = 0; _size < x._size; _size++)
+				for (_size = 0; _size < x._size; ++_size)
 				{
 					_allocator.construct(_data + _size, x[_size]);
 				}
@@ -172,7 +172,7 @@ namespace ft
 		{
 			if (n <= _size)
 			{
-				for (size_type i = n; i < _size; i++)
+				for (size_type i = n; i < _size; ++i)
 				{
 					_allocator.destroy(_data + i);
 				}
@@ -180,7 +180,7 @@ namespace ft
 			else
 			{
 				this->reserve(n);
-				for (size_type i = _size; i < n; i++)
+				for (size_type i = _size; i < n; ++i)
 				{
 					_allocator.construct(_data + i, val);
 				}
@@ -205,9 +205,11 @@ namespace ft
 				pointer tmp = _data;
 
 				if (n < _capacity * 2)
+				{
 					n = _capacity * 2;
+				}
 				_data = _allocator.allocate(n);
-				for (size_type i = 0; i < _size; i++)
+				for (size_type i = 0; i < _size; ++i)
 				{
 					_allocator.construct(_data + i, tmp[i]);
 					_allocator.destroy(tmp + i);
@@ -270,12 +272,12 @@ namespace ft
 		{
 			size_type n = 0;
 
-			for (InputIterator it = first; it != last; it++)
+			for (InputIterator it = first; it != last; ++it)
 			{
-				n++;
+				++n;
 			}
 			this->reserve(n);
-			for (size_type i = 0; i < n; i++)
+			for (size_type i = 0; i < n; ++i)
 			{
 				if (i < _size)
 				{
@@ -289,7 +291,7 @@ namespace ft
 		void assign(size_type n, const value_type &val)
 		{
 			this->reserve(n);
-			for (size_type i = 0; i < n; i++)
+			for (size_type i = 0; i < n; ++i)
 			{
 				if (i < _size)
 				{
@@ -309,14 +311,14 @@ namespace ft
 			else
 			{
 				_allocator.construct(_data + _size, val);
-				_size++;
+				++_size;
 			}
 		}
 
 		void pop_back()
 		{
 			_allocator.destroy(_data + _size);
-			_size--;
+			--_size;
 		}
 
 		iterator insert(iterator position, const value_type &val)
@@ -336,11 +338,11 @@ namespace ft
 			{
 				this->reserve(_size + n);
 			}
-			for (iterator it = this->end(); it != position; it--)
+			for (iterator it = this->end(); it != position; --it)
 			{
 				*(it - 1 + n) = *(it - 1);
 			}
-			for (size_type j = 0; j < n; j++)
+			for (size_type j = 0; j < n; ++j)
 			{
 				_allocator.construct(_data + i + j, val);
 			}
@@ -356,19 +358,19 @@ namespace ft
 			size_type i = position - this->begin();
 			size_type n = 0;
 
-			for (InputIterator it = first; it != last; it++)
+			for (InputIterator it = first; it != last; ++it)
 			{
-				n++;
+				++n;
 			}
 			if (_size + n > _capacity)
 			{
 				this->reserve(_size + n);
 			}
-			for (iterator it = this->end(); it != position; it--)
+			for (iterator it = this->end(); it != position; --it)
 			{
 				*(it - 1 + n) = *(it - 1);
 			}
-			for (size_type j = 0; j < n; j++)
+			for (size_type j = 0; j < n; ++j)
 			{
 				_allocator.construct(_data + i + j, *first++);
 			}
@@ -384,14 +386,14 @@ namespace ft
 		{
 			size_type i = 0;
 
-			for (iterator it = first; it != last; it++)
+			for (iterator it = first; it != last; ++it)
 			{
 				_allocator.destroy(&(*it));
 			}
-			for (iterator it = last + 1; it != this->end(); it++)
+			for (iterator it = last + 1; it != this->end(); ++it)
 			{
 				*(first + i) = *it;
-				i++;
+				++i;
 			}
 			_size -= last - first;
 
@@ -445,7 +447,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		return (ft::lexicographical_compare(lsh.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class T, class Alloc>
