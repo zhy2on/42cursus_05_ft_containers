@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/16 18:03:02 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/17 18:25:27 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define MAP_ITERATOR
 
 #include <cstddef> // std::ptrdiff_t
+#include "rbtree.hpp"
 #include "iterator_traits.hpp"
 
 namespace ft
@@ -22,11 +23,14 @@ namespace ft
     class map_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
     {
     public:
-        typedef typename ft::iterator_traits<map_iterator<T>>::value_type value_type;
-        typedef typename ft::iterator_traits<map_iterator<T>>::difference_type difference_type;
-        typedef typename ft::iterator_traits<map_iterator<T>>::pointer pointer;
-        typedef typename ft::iterator_traits<map_iterator<T>>::reference reference;
-        typedef typename ft::iterator_traits<map_iterator<T>>::iterator_category iterator_category;
+        typedef typename ft::iterator_traits<map_iterator<T> >::value_type value_type;
+        typedef typename ft::iterator_traits<map_iterator<T> >::difference_type difference_type;
+        typedef typename ft::iterator_traits<map_iterator<T> >::pointer pointer;
+        typedef typename ft::iterator_traits<map_iterator<T> >::reference reference;
+        typedef typename ft::iterator_traits<map_iterator<T> >::iterator_category iterator_category;
+        typedef typename ft::rbtree<value_type> node_type;
+        typedef typename node_type *node_pointer;
+
         // OCCF
         map_iterator() // default
             : _ptr(0)
