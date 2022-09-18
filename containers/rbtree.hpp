@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/17 19:00:26 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/18 16:31:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,6 @@
 
 namespace ft
 {
-	enum Color
-	{
-		BLACK,
-		RED
-	};
-
-	template <typename Key, typename T>
-	struct Node
-	{
-		Key key;
-		T value;
-		Node *parent;
-		Node *left;
-		Node *right;
-		Color color;
-	};
-
 	template <typename Key,
 			  typename T,
 			  typename Compare = std::less<Key>,
@@ -49,15 +32,48 @@ namespace ft
 		typedef ft::pair<const key_type, mapped_type> value_type;
 		typedef Compare key_compare;
 		typedef Alloc allocator_type;
-		typedef Node<value_type> NodeType;
-		typedef Node<value_type> *NodePtr;
+
+		enum Color
+		{
+			BLACK,
+			RED
+		};
+
+		struct Node
+		{
+			value_type data;
+			Node *parent;
+			Node *left;
+			Node *right;
+			Color color;
+		};
+
+		typedef Node<value_type> node_type;
+		typedef Node<value_type> *node_pointer;
 
 	private:
-		NodePtr _root;
-		NodePtr TNULL;
+		std::allocator<node_type> _nodeAlloc;
+		node_pointer _root;
+		node_pointer _TNULL;
 		key_compare _comp;
+		
+		// new node
+		node_pointer getNode(value_type data)
+		{
+			node_type node;
+			node_pointer ptr;
 
-		void initializeNULLNode(NodePtr node, NodePtr parent)
+			node.parent = NULL;
+			node.data = data;
+			node.left = _TNULL;
+			node.right = _TNULL;
+			node.color = RED;
+
+			_nodeAlloc(ptr, node);
+			return ptr;
+		}
+
+		void initializeNULLNode(node_pointer node, node_pointer parent)
 		{
 			node->data = 0;
 			node->parent = parent;
@@ -67,9 +83,9 @@ namespace ft
 		}
 
 		// Preorder
-		void preOrderHelper(NodePtr node)
+		void preOrderHelper(node_pointer node)
 		{
-			if (node != TNULL)
+			if (node != _TNULL)
 			{
 				std::cout << node->data << " ";
 				preOrderHelper(node->left);
@@ -78,9 +94,9 @@ namespace ft
 		}
 
 		// Inorder
-		void inOrderHelper(NodePtr node)
+		void inOrderHelper(node_pointer node)
 		{
-			if (node != TNULL)
+			if (node != _TNULL)
 			{
 				inOrderHelper(node->left);
 				std::cout << node->data << " ";
@@ -89,9 +105,9 @@ namespace ft
 		}
 
 		// Post order
-		void postOrderHelper(NodePtr node)
+		void postOrderHelper(node_pointer node)
 		{
-			if (node != TNULL)
+			if (node != _TNULL)
 			{
 				postOrderHelper(node->left);
 				postOrderHelper(node->right);
@@ -99,9 +115,9 @@ namespace ft
 			}
 		}
 
-		NodePtr searchTreeHelper(NodePtr node, key_type key)
+		node_pointer searchTreeHelper(node_pointer node, key_type key)
 		{
-			if (node == TNULL || !key_compare()(key, node->data->first))
+			if (node == _TNULL || !key_compare()(key, node->data->first))
 			{
 				return node;
 			}
@@ -114,9 +130,9 @@ namespace ft
 		}
 
 		// For balancing the tree after deletion
-		void deleteFix(NodePtr x)
+		void deleteFix(node_pointer x)
 		{
-			NodePtr s;
+			node_pointer s;
 			while (x != _root && x->color == BLACK)
 			{
 				if (x == x->parent->left)
@@ -189,7 +205,7 @@ namespace ft
 			x->color = BLACK;
 		}
 
-		void rbTransplant(NodePtr u, NodePtr v)
+		void rbTransplant(node_pointer u, node_pointer v)
 		{
 			if (u->parent == NULL)
 			{
@@ -206,11 +222,11 @@ namespace ft
 			v->parent = u->parent;
 		}
 
-		void deleteNodeHelper(NodePtr node, int key)
+		void deleteNodeHelper(node_pointer node, int key)
 		{
-			NodePtr z = TNULL;
-			NodePtr x, y;
-			while (node != TNULL)
+			node_pointer z = _TNULL;
+			node_pointer x, y;
+			while (node != _TNULL)
 			{
 				if (node->data == key)
 				{
@@ -227,7 +243,7 @@ namespace ft
 				}
 			}
 
-			if (z == TNULL)
+			if (z == _TNULL)
 			{
 				// std::cout << "Key not found in the tree" << std::endl;
 				return;
@@ -235,12 +251,12 @@ namespace ft
 
 			y = z;
 			int y_original_color = y->color;
-			if (z->left == TNULL)
+			if (z->left == _TNULL)
 			{
 				x = z->right;
 				rbTransplant(z, z->right);
 			}
-			else if (z->right == TNULL)
+			else if (z->right == _TNULL)
 			{
 				x = z->left;
 				rbTransplant(z, z->left);
@@ -274,9 +290,9 @@ namespace ft
 		}
 
 		// For balancing the tree after insertion
-		void insertFix(NodePtr k)
+		void insertFix(node_pointer k)
 		{
-			NodePtr u;
+			node_pointer u;
 			while (k->parent->color == RED)
 			{
 				if (k->parent == k->parent->parent->right)
@@ -332,9 +348,9 @@ namespace ft
 			_root->color = BLACK;
 		}
 
-		void printHelper(NodePtr _root, std::string indent, bool last)
+		void printHelper(node_pointer _root, std::string indent, bool last)
 		{
-			if (_root != TNULL)
+			if (_root != _TNULL)
 			{
 				std::cout << indent;
 				if (last)
@@ -358,11 +374,11 @@ namespace ft
 	public:
 		rbtree()
 		{
-			TNULL = new NodeType;
-			TNULL->color = BLACK;
-			TNULL->left = NULL;
-			TNULL->right = NULL;
-			_root = TNULL;
+			_TNULL = new node_type;
+			_TNULL->color = BLACK;
+			_TNULL->left = NULL;
+			_TNULL->right = NULL;
+			_root = _TNULL;
 		}
 
 		void preorder()
@@ -380,38 +396,38 @@ namespace ft
 			postOrderHelper(this->_root);
 		}
 
-		NodePtr searchTree(int k)
+		node_pointer searchTree(int k)
 		{
 			return searchTreeHelper(this->_root, k);
 		}
 
-		NodePtr minimum(NodePtr node)
+		node_pointer minimum(node_pointer node)
 		{
-			while (node->left != TNULL)
+			while (node->left != _TNULL)
 			{
 				node = node->left;
 			}
 			return node;
 		}
 
-		NodePtr maximum(NodePtr node)
+		node_pointer maximum(node_pointer node)
 		{
-			while (node->right != TNULL)
+			while (node->right != _TNULL)
 			{
 				node = node->right;
 			}
 			return node;
 		}
 
-		NodePtr successor(NodePtr x)
+		node_pointer successor(node_pointer x)
 		{
-			if (x->right != TNULL)
+			if (x->right != _TNULL)
 			{
 				return minimum(x->right);
 			}
 
-			NodePtr y = x->parent;
-			while (y != TNULL && x == y->right)
+			node_pointer y = x->parent;
+			while (y != _TNULL && x == y->right)
 			{
 				x = y;
 				y = y->parent;
@@ -419,15 +435,15 @@ namespace ft
 			return y;
 		}
 
-		NodePtr predecessor(NodePtr x)
+		node_pointer predecessor(node_pointer x)
 		{
-			if (x->left != TNULL)
+			if (x->left != _TNULL)
 			{
 				return maximum(x->left);
 			}
 
-			NodePtr y = x->parent;
-			while (y != TNULL && x == y->left)
+			node_pointer y = x->parent;
+			while (y != _TNULL && x == y->left)
 			{
 				x = y;
 				y = y->parent;
@@ -436,11 +452,11 @@ namespace ft
 			return y;
 		}
 
-		void leftRotate(NodePtr x)
+		void leftRotate(node_pointer x)
 		{
-			NodePtr y = x->right;
+			node_pointer y = x->right;
 			x->right = y->left;
-			if (y->left != TNULL)
+			if (y->left != _TNULL)
 			{
 				y->left->parent = x;
 			}
@@ -461,11 +477,11 @@ namespace ft
 			x->parent = y;
 		}
 
-		void rightRotate(NodePtr x)
+		void rightRotate(node_pointer x)
 		{
-			NodePtr y = x->left;
+			node_pointer y = x->left;
 			x->left = y->right;
-			if (y->right != TNULL)
+			if (y->right != _TNULL)
 			{
 				y->right->parent = x;
 			}
@@ -487,19 +503,13 @@ namespace ft
 		}
 
 		// Inserting a node
-		void insert(int key)
+		void insert(value_type data)
 		{
-			NodePtr node = new NodeType;
-			node->parent = NULL;
-			node->data = key;
-			node->left = TNULL;
-			node->right = TNULL;
-			node->color = RED;
+			node_pointer node = getNode(data);
+			node_pointer y = NULL;
+			node_pointer x = this->_root;
 
-			NodePtr y = NULL;
-			NodePtr x = this->_root;
-
-			while (x != TNULL)
+			while (x != _TNULL)
 			{
 				y = x;
 				if (node->data < x->data)
@@ -540,7 +550,7 @@ namespace ft
 			insertFix(node);
 		}
 
-		NodePtr get_root()
+		node_pointer get_root()
 		{
 			return this->_root;
 		}
