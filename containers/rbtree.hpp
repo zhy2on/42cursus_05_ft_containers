@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/20 23:20:13 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 00:59:20 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace ft
 		typedef typename Container::value_type value_type;
 		typedef typename Container::pointer pointer;
 		typedef typename Container::key_compare key_compare;
+		typedef typename Container::value_compare value_compare;
 		typedef typename Container::allocator_type allocator_type;
 
 		enum
@@ -62,27 +63,27 @@ namespace ft
 		}
 
 		// minimum: leftmost node
-		node_pointer minimum(node_pointer node)
+		node_pointer minimum(node_pointer x)
 		{
-			while (node->left != _TNULL)
+			while (x->left != _TNULL)
 			{
-				node = node->left;
+				x = x->left;
 			}
-			return node;
+			return x;
 		}
 
 		// maximum: rightmost node
-		node_pointer maximum(node_pointer node)
+		node_pointer maximum(node_pointer x)
 		{
-			while (node->right != _TNULL)
+			while (x->right != _TNULL)
 			{
-				node = node->right;
+				x = x->right;
 			}
-			return node;
+			return x;
 		}
 
-		// insert - map
-		void insert(const value_type &data)
+		// insertNode
+		void insertNode(const value_type &data)
 		{
 			node_pointer z = _getnode(NULL, data, RED);
 			node_pointer y = NULL;
@@ -91,7 +92,7 @@ namespace ft
 			while (x != _TNULL)
 			{
 				y = x;
-				if (!_comp(z->data.first, x->data.first)) // data < x->data
+				if (_value_comp(z->data, x->data)) // data < x->data
 				{
 					x = x->left;
 				}
@@ -106,7 +107,7 @@ namespace ft
 			{
 				root = z;
 			}
-			else if (!_comp(z->data.first, y->data.first))
+			else if (_value_comp(z->data, y->data))
 			{
 				y->left = z;
 			}
@@ -129,11 +130,18 @@ namespace ft
 			_insertFix(z);
 		}
 
+		// deleteNode
+		void deleteNode(value_type data)
+		{
+			
+		}
+
 	private:
 		// Member variables
 		node_pointer _root;
 		node_pointer _TNULL;
 		key_compare _comp;
+		value_compare _value_comp;
 
 		// Private member functions
 		void _initializeNULLNode(node_pointer node, node_pointer parent)
@@ -240,6 +248,29 @@ namespace ft
 				}
 			}
 			_root->color = BLACK;
+		}
+
+		bool _equal(const value_type &a, const value_type &b)
+		{
+			return !_value_comp(a, b) && !_value_comp(b, a);
+		}
+
+		node_pointer _searchKey(value_type data)
+		{
+			node_pointer t = _root;
+			
+			while (t != NULL && !_equal(data, t->data))
+			{
+				if (_value_comp(data, t->data))
+				{
+					t = t->left;
+				}
+				else
+				{
+					t = t->right;
+				}
+			}
+			return t;
 		}
 	};
 } // namespace ft
