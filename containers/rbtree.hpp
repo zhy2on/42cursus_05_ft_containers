@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/20 18:44:22 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/20 23:20:13 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,15 @@ namespace ft
 		// constructor
 		rbtree()
 		{
-			_TNULL = _getnode(NULL, value_type(), BLACK);
+			node_type tmp;
+			tmp.left = NULL;
+			tmp.right = NULL;
+			tmp.color = BLACK;
+			node_allocator(_TNULL, tmp);
 			_root = _TNULL;
 		}
 
-		// minimum: 노드 기준 가장 왼쪽에 있는 노드 반환
+		// minimum: leftmost node
 		node_pointer minimum(node_pointer node)
 		{
 			while (node->left != _TNULL)
@@ -67,7 +71,7 @@ namespace ft
 			return node;
 		}
 
-		// maximum: 노드 기준 가장 오른쪽에 있는 노드 반환
+		// maximum: rightmost node
 		node_pointer maximum(node_pointer node)
 		{
 			while (node->right != _TNULL)
@@ -80,15 +84,14 @@ namespace ft
 		// insert - map
 		void insert(const value_type &data)
 		{
-			node_pointer node = _getnode(NULL, data, RED);
-
+			node_pointer z = _getnode(NULL, data, RED);
 			node_pointer y = NULL;
 			node_pointer x = _root;
 
 			while (x != _TNULL)
 			{
 				y = x;
-				if (!_comp(data.first, x->data.first))
+				if (!_comp(z->data.first, x->data.first)) // data < x->data
 				{
 					x = x->left;
 				}
@@ -98,32 +101,32 @@ namespace ft
 				}
 			}
 
-			node->parent = y;
+			z->parent = y;
 			if (y == NULL)
 			{
-				root = node;
+				root = z;
 			}
-			else if (_comp(data.first, x->data.first))
+			else if (!_comp(z->data.first, y->data.first))
 			{
-				y->left = node;
+				y->left = z;
 			}
 			else
 			{
-				y->right = node;
+				y->right = z;
 			}
 
-			if (node->parent == NULL)
+			if (z->parent == NULL)
 			{
-				node->color = BLACK;
+				z->color = BLACK;
 				return;
 			}
 
-			if (node->parent->parent == NULL)
+			if (z->parent->parent == NULL)
 			{
 				return;
 			}
 
-			_insertFix(node);
+			_insertFix(z);
 		}
 
 	private:
@@ -142,15 +145,15 @@ namespace ft
 			node->color = BLACK;
 		}
 
-		node_pointer _getnode(node_pointer parent, value_type data, int color)
+		node_pointer _getnode(node_pointer parent, const value_type &data, const int &color)
 		{
 			node_type tmp;
 			node_pointer ptr;
 
 			tmp.parent = parent;
 			tmp.data = data;
-			tmp.left = NULL;
-			tmp.right = NULL;
+			tmp.left = _TNULL;
+			tmp.right = _TNULL;
 			tmp.color = color;
 			node_allocator(ptr, tmp);
 			return ptr;
@@ -165,7 +168,8 @@ namespace ft
 				y->left->parent = x;
 			}
 			y->parent = x->parent;
-			if (x->parent == NULL) {
+			if (x->parent == NULL)
+			{
 				_root = y;
 			}
 			else if (x == x->parent->left)
@@ -207,35 +211,36 @@ namespace ft
 
 		void _insertFix(node_pointer k)
 		{
-			node_pointer u;
+			// if parent is left child of grandparent side is true, else side is false
+			bool side = (k->parent == k->parent->parent->left);
+			// set uncle node
+			node_pointer u = side ? k->parent->parent->right : k->parent->parent->left;
 
-			while (k->parent->color == RED)
+			while (k != _root && k->parent->color == RED)
 			{
-				if (k->parent == k->parent->parent->right)
+				if (u->color == RED)
 				{
-					u = k->parent->parent->left;
-					if (u->color == RED)
+					// if uncle's color is RED -> recoloring
+					u->color = BLACK;
+					k->parent->color = BLACK;
+					k->parent->parent->color = RED;
+					k = k->parent->parent;
+				}
+				else
+				{
+					// if uncle is not exist or uncle's color is BLACK -> restructuring
+					if (k == (side ? k->parent->right : k->parent->left))
 					{
-						u->color = BLACK;
-						k->parent->color = BLACK;
-						k->parent->parent->color = RED;
-						k = k->parent->parent;
+						k = k->parent;
+						side ? _leftRotate(k) : _rightRotate(k);
 					}
-					else
-					{
-						if (k == k->parent->left)
-						{
-							k = k->parent;
-							_rightRotate(k);
-						}
-						k->parent->color = BLACK;
-						k->parent->parent->color = RED;
-						_leftRotate(k->parent->parent);
-					}
+					k->parent->color = BLACK;
+					k->parent->parent->color = RED;
+					side ? _rightRotate(k->parent->parent) : _leftRotate(k->parent->parent);
 				}
 			}
+			_root->color = BLACK;
 		}
-		
 	};
 } // namespace ft
 
