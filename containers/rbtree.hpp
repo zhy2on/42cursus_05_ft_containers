@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 01:40:48 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 02:28:54 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ namespace ft
 	{
 	public:
 		// Member types
-		typedef typename Container::key_type key_type;
 		typedef typename Container::value_type value_type;
-		typedef typename Container::pointer pointer;
 		typedef typename Container::key_compare key_compare;
 		typedef typename Container::value_compare value_compare;
-		typedef typename Container::allocator_type allocator_type;
 
 		enum
 		{
@@ -54,11 +51,10 @@ namespace ft
 		// constructor
 		rbtree()
 		{
-			node_type tmp;
-			tmp.left = NULL;
-			tmp.right = NULL;
-			tmp.color = BLACK;
-			node_allocator(_TNULL, tmp);
+			_TNULL = _node_alloc.allocate(1);
+			_TNULL->left = NULL;
+			_TNULL->right = NULL;
+			_TNULL->color = BLACK;
 			_root = _TNULL;
 		}
 
@@ -105,7 +101,7 @@ namespace ft
 			z->parent = y;
 			if (y == NULL)
 			{
-				root = z;
+				_root = z;
 			}
 			else if (_value_comp(z->data, y->data))
 			{
@@ -173,7 +169,7 @@ namespace ft
 				y->left->parent = y;
 				y->color = z->color;
 			}
-			node_allocator.destroy(z);
+			_node_alloc.deallocate(z);
 			if (y_original_color == BLACK)
 			{
 				_deleteFix(x);
@@ -185,8 +181,8 @@ namespace ft
 		// Member variables
 		node_pointer _root;
 		node_pointer _TNULL;
-		key_compare _comp;
-		value_compare _value_comp;
+		value_compare _value_comp(key_compare);
+		node_allocator _node_alloc;
 
 		// Private member functions
 		void _initializeNULLNode(node_pointer node, node_pointer parent)
@@ -200,15 +196,12 @@ namespace ft
 
 		node_pointer _getnode(node_pointer parent, const value_type &data, const int &color)
 		{
-			node_type tmp;
-			node_pointer ptr;
-
-			tmp.parent = parent;
-			tmp.data = data;
-			tmp.left = _TNULL;
-			tmp.right = _TNULL;
-			tmp.color = color;
-			node_allocator(ptr, tmp);
+			node_pointer ptr = _node_alloc.allocate(1);
+			ptr->parent = NULL;
+			ptr->left = NULL;
+			ptr->right = NULL;
+			ptr->data = data;
+			ptr->color = color;
 			return ptr;
 		}
 
