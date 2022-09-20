@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 00:59:20 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 01:40:48 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ namespace ft
 		}
 
 		// minimum: leftmost node
-		node_pointer minimum(node_pointer x)
+		node_pointer minimum(const node_pointer x) const
 		{
 			while (x->left != _TNULL)
 			{
@@ -73,7 +73,7 @@ namespace ft
 		}
 
 		// maximum: rightmost node
-		node_pointer maximum(node_pointer x)
+		node_pointer maximum(const node_pointer x) const
 		{
 			while (x->right != _TNULL)
 			{
@@ -131,9 +131,54 @@ namespace ft
 		}
 
 		// deleteNode
-		void deleteNode(value_type data)
+		bool deleteNode(const value_type &data)
 		{
-			
+			node_pointer z = _searchKey(data);
+			node_pointer x, y;
+			// if key is not found
+			if (z == _TNULL)
+			{
+				return false;
+			}
+			// if key is exist
+			y = z;
+			int y_original_color = y->color;
+			if (z->left == _TNULL)
+			{
+				x = z->right;
+				_rbTransplant(z, z->right);
+			}
+			else if (z->right == _TNULL)
+			{
+				x = z->left;
+				_rbTransplant(z, z->left);
+			}
+			else
+			{
+				y = minimum(z->right);
+				y_original_color = y->color;
+				x = y->right;
+				if (y->parent == z)
+				{
+					x->parent = y;
+				}
+				else
+				{
+					_rbTransplant(y, y->right);
+					y->right = z->right;
+					y->right->parent = y;
+				}
+				_rbTransplant(z, y);
+				y->left = z->left;
+				y->left->parent = y;
+				y->color = z->color;
+			}
+			node_allocator.destroy(z);
+			if (y_original_color == BLACK)
+			{
+				_deleteFix(x);
+			}
+			return true;
 		}
 
 	private:
@@ -219,7 +264,7 @@ namespace ft
 
 		void _insertFix(node_pointer k)
 		{
-			// if parent is left child of grandparent side is true, else side is false
+			// if parent is left child of grandparent, side is true else side is false
 			bool side = (k->parent == k->parent->parent->left);
 			// set uncle node
 			node_pointer u = side ? k->parent->parent->right : k->parent->parent->left;
@@ -259,7 +304,7 @@ namespace ft
 		{
 			node_pointer t = _root;
 			
-			while (t != NULL && !_equal(data, t->data))
+			while (t != _TNULL && !_equal(data, t->data))
 			{
 				if (_value_comp(data, t->data))
 				{
@@ -271,6 +316,68 @@ namespace ft
 				}
 			}
 			return t;
+		}
+
+		void _rbTransplant(node_pointer u, node_pointer v)
+		{
+			if (u->parent == NULL)
+			{
+				_root = v;
+			}
+			else if (u == u->parent->left)
+			{
+				u->parent->left = v;
+			}
+			else
+			{
+				u->parent->right = v;
+			}
+			v->parent = u->parent;
+		}
+
+		void _deleteFix(node_pointer x)
+		{
+			// if x is left child, side is true else side is false
+			bool side = (x == x->parent->left);
+			// set sibling node
+			node_pointer s = side ? x->parent->right : x->parent->left;
+
+			while (x != _root && x->color == BLACK)
+			{
+				// case 1
+				if (s->color == RED)
+				{
+					s->color = BLACK;
+					x->parent->color = RED;
+					side ? _leftRotate(x->parent) : _rightRotate(x->parent);
+					s = side ? x->parent->right : x->parent->left;
+				}
+				// case 2
+				if (s->left->color == BLACK && s->right->color == BLACK)
+				{
+					s->color = RED;
+					x = x->parent;
+				}
+				else
+				{
+					// case 3
+					if ((side ? s->right->color : s->left->color) == BLACK)
+					{
+						(side ? s->left->color : s->right->color) = BLACK;
+						s->color = RED;
+						side ? _rightRotate(s) : _leftRotate(s);
+						s = side ? x->parent->right : x->parent->left;
+					}
+					// case 4
+					s->color = x->parent->color;
+					x->parent->color = BLACK;
+					(side ? s->right->color : s->left->color) = BLACK;
+					side ? _leftRotate(x->parent) : _rightRotate(x->parent);
+					x = _root;
+				}
+			}
+			x->color = BLACK;
+			_root->color = BLACK;
 		}
 	};
 } // namespace ft
