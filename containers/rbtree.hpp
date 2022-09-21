@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 22:33:03 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 23:20:18 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,29 @@ namespace ft
 
 		// Member functions
 		// constructor
-		rbtree()
-			: _comp_val(Container().value_comp())
+		rbtree(value_compare comp_val)
+			: _comp_val(comp_val)
 		{
 			_TNULL = _node_alloc.allocate(1);
 			node_type tmp(value_type(), BLACK);
 			_node_alloc.construct(_TNULL, tmp);
 			_root = _TNULL;
 		}
+
+		// getRoot
+		const node_pointer getRoot() const
+		{
+			return _root;
+		}
+
+		// void inorder(node_pointer target)
+		// {
+		// 	if (target == _TNULL)
+		// 		return;
+		// 	inorder(target->left);
+		// 	std::cout << target->data.first << " ";
+		// 	inorder(target->right);
+		// }
 
 		// minimum: leftmost node
 		node_pointer minimum(const node_pointer x) const
