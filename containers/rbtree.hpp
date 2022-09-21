@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 02:28:54 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 22:33:03 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ namespace ft
 	public:
 		// Member types
 		typedef typename Container::value_type value_type;
-		typedef typename Container::key_compare key_compare;
+		typedef typename Container::allocator_type allocator_type;
 		typedef typename Container::value_compare value_compare;
-
+		
 		enum
 		{
 			RED,
@@ -41,20 +41,25 @@ namespace ft
 			node *left;
 			node *right;
 			int color;
+
+			node(value_type data, int color)
+				: parent(NULL), left(NULL), right(NULL), color(color), data(data)
+			{
+			}
 		};
 
 		typedef node node_type;
 		typedef node *node_pointer;
-		typedef std::allocator<node> node_allocator;
+		typedef std::allocator<node> node_allocator_type;
 
 		// Member functions
 		// constructor
 		rbtree()
+			: _comp_val(Container().value_comp())
 		{
 			_TNULL = _node_alloc.allocate(1);
-			_TNULL->left = NULL;
-			_TNULL->right = NULL;
-			_TNULL->color = BLACK;
+			node_type tmp(value_type(), BLACK);
+			_node_alloc.construct(_TNULL, tmp);
 			_root = _TNULL;
 		}
 
@@ -88,7 +93,7 @@ namespace ft
 			while (x != _TNULL)
 			{
 				y = x;
-				if (_value_comp(z->data, x->data)) // data < x->data
+				if (_comp_val(z->data, x->data)) // data < x->data
 				{
 					x = x->left;
 				}
@@ -103,7 +108,7 @@ namespace ft
 			{
 				_root = z;
 			}
-			else if (_value_comp(z->data, y->data))
+			else if (_comp_val(z->data, y->data))
 			{
 				y->left = z;
 			}
@@ -178,30 +183,17 @@ namespace ft
 		}
 
 	private:
-		// Member variables
-		node_pointer _root;
-		node_pointer _TNULL;
-		value_compare _value_comp(key_compare);
-		node_allocator _node_alloc;
-
 		// Private member functions
-		void _initializeNULLNode(node_pointer node, node_pointer parent)
-		{
-			node->data = NULL;
-			node->parent = parent;
-			node->left = NULL;
-			node->right = NULL;
-			node->color = BLACK;
-		}
-
 		node_pointer _getnode(node_pointer parent, const value_type &data, const int &color)
 		{
 			node_pointer ptr = _node_alloc.allocate(1);
-			ptr->parent = NULL;
-			ptr->left = NULL;
-			ptr->right = NULL;
-			ptr->data = data;
-			ptr->color = color;
+			node_type tmp(data, color);
+
+			tmp.parent = _TNULL;
+			tmp.left = _TNULL;
+			tmp.right = _TNULL;
+			_node_alloc.construct(ptr, tmp);
+
 			return ptr;
 		}
 
@@ -290,7 +282,7 @@ namespace ft
 
 		bool _equal(const value_type &a, const value_type &b)
 		{
-			return !_value_comp(a, b) && !_value_comp(b, a);
+			return !_comp_val(a, b) && !_comp_val(b, a);
 		}
 
 		node_pointer _searchKey(value_type data)
@@ -299,7 +291,7 @@ namespace ft
 			
 			while (t != _TNULL && !_equal(data, t->data))
 			{
-				if (_value_comp(data, t->data))
+				if (_comp_val(data, t->data))
 				{
 					t = t->left;
 				}
@@ -372,6 +364,12 @@ namespace ft
 			x->color = BLACK;
 			_root->color = BLACK;
 		}
+
+		// Member variables
+		node_pointer _root;
+		node_pointer _TNULL;
+		value_compare _comp_val;
+		node_allocator_type _node_alloc;
 	};
 } // namespace ft
 

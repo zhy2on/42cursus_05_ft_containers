@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/18 22:38:12 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 22:27:09 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "rbtree.hpp"
 #include <functional> // std::less
 #include <cstddef>	  // std::ptrdiff_t, std::size_t
+#include <iostream>
 
 namespace ft
 {
@@ -28,7 +29,6 @@ namespace ft
 	class map
 	{
 	public:
-		class ValueCompare;
 		// Member types
 		typedef Key key_type;
 		typedef T mapped_type;
@@ -45,28 +45,51 @@ namespace ft
 		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
 		typedef std::size_t size_type;
+
 		class value_compare
 		{
-		private:
 			friend class map;
 
 		protected:
-			Compare comp;
-			value_compare(Compare c) : comp(c) {} // constructed with map's comparison object
+			Compare _comp;
+			value_compare(Compare c) : _comp(c) {} // constructed with map's comparison object
+
 		public:
 			typedef bool result_type;
 			typedef value_type first_argument_type;
 			typedef value_type second_argument_type;
 			bool operator()(const value_type &x, const value_type &y) const
 			{
-				return comp(x.first, y.first);
+				return _comp(x.first, y.first);
 			}
 		};
 
+		map()
+			: _comp_val(value_compare(_comp_key))
+		{
+		}
+
+		// Member functions
+		void insert(value_type k)
+		{
+			_bst.insertNode(k);
+		}
+
+		key_compare key_comp() const
+		{
+			return key_compare();
+		}
+
+		value_compare value_comp() const
+		{
+			return value_compare(key_compare());
+		}
+
 	private:
-		typedef ft::rbtree<value_type> node_type;
-		typedef node_type *node_pointer;
-		node_pointer _root;
+		key_compare _comp_key;
+		value_compare _comp_val;
+		// ft::rbtree<map<Key, T, Compare, Alloc> > _bst;
+		ft::rbtree<map> _bst;
 	};
 
 } // namespace ft
