@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 15:49:24 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 18:32:31 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/22 23:29:25 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 namespace ft
 {
 	// enable_if
-	template <bool Cond, class T = void>
+	template <bool Cond, typename T = void>
 	struct enable_if
 	{
 	};
 
-	template <class T>
+	template <typename T>
 	struct enable_if<true, T>
 	{
 		typedef T type;
 	};
 
 	// is_integral
-	template <class T>
+	template <typename T>
 	struct is_integral
 	{
 		static const bool value = false;

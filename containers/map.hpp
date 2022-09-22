@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/22 14:00:37 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/22 23:30:15 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 
 namespace ft
 {
-	template <class Key,										   // map::key_type
-			  class T,											   // map::mapped_type
-			  class Compare = std::less<Key>,					   // map::key_compare
-			  class Alloc = std::allocator<ft::pair<const Key, T> > // map::allocator_type
+	template <typename Key,										   // map::key_type
+			  typename T,											   // map::mapped_type
+			  typename Compare = std::less<Key>,					   // map::key_compare
+			  typename Alloc = std::allocator<ft::pair<const Key, T> > // map::allocator_type
 			  >
 	class map
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:38:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/16 15:42:55 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/22 23:31:39 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 namespace ft
 {
-    template <class InputIterator1, class InputIterator2>
+    template <typename InputIterator1, typename InputIterator2>
     bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
     {
         for (; first1 != last1; ++first1, ++first2)
@@ -28,7 +28,7 @@ namespace ft
         return true;
     }
 
-    template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+    template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
     bool equal(InputIterator1 first1, InputIterator1 last1,
                InputIterator2 first2, BinaryPredicate pred)
     {
@@ -42,7 +42,7 @@ namespace ft
         return true;
     }
 
-    template <class InputIterator1, class InputIterator2>
+    template <typename InputIterator1, typename InputIterator2>
     bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
                                  InputIterator2 first2, InputIterator2 last2)
     {
@@ -57,7 +57,7 @@ namespace ft
         return (first1 == last1) && (first2 != last2);
     }
 
-    template <class InputIterator1, class InputIterator2, class Compare>
+    template <typename InputIterator1, typename InputIterator2, typename Compare>
     bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
                                  InputIterator2 first2, InputIterator2 last2,
                                  Compare comp)
