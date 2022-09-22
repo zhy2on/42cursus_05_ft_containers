@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/16 15:52:11 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/22 17:13:55 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "type_traits.hpp"
 #include "reverse_iterator.hpp"
-#include "vector_iterator.hpp"
+#include "normal_iterator.hpp"
 #include "algorithm.hpp"
 #include <cstddef>	 // std::ptrdiff_t
 #include <memory>	 // std::allocator
@@ -33,8 +33,8 @@ namespace ft
 		typedef const value_type &const_reference;
 		typedef value_type *pointer;
 		typedef const value_type *const_pointer;
-		typedef ft::vector_iterator<value_type> iterator;
-		typedef ft::vector_iterator<const value_type> const_iterator;
+		typedef ft::normal_iterator<pointer> iterator;
+		typedef ft::normal_iterator<const_pointer> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
