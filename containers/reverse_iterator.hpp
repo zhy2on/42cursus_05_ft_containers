@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 19:47:03 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/22 23:27:54 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/23 01:12:05 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,25 @@
 namespace ft
 {
 	template <typename Iterator>
-	class reverse_iterator : public iterator<typename ft::iterator_traits<Iterator>::iterator_category, Iterator>
+	class reverse_iterator
+		: public iterator<typename ft::iterator_traits<Iterator>::iterator_category,
+						  typename ft::iterator_traits<Iterator>::value_type,
+						  typename ft::iterator_traits<Iterator>::difference_type,
+						  typename ft::iterator_traits<Iterator>::pointer,
+						  typename ft::iterator_traits<Iterator>::reference>
 	{
 	protected:
 		Iterator _base_iterator; // A copy of the original iterator
-		typedef typename ft::iterator_traits<Iterator> type_traits;
+		typedef typename ft::iterator_traits<Iterator> traits_type;
 
 	public:
 		// Member types
 		typedef Iterator iterator_type;
-		typedef typename type_traits::iterator_category iterator_category;
-		typedef typename type_traits::value_type value_type;
-		typedef typename type_traits::difference_type difference_type;
-		typedef typename type_traits::pointer pointer;
-		typedef typename type_traits::reference reference;
+		typedef typename traits_type::iterator_category iterator_category;
+		typedef typename traits_type::value_type value_type;
+		typedef typename traits_type::difference_type difference_type;
+		typedef typename traits_type::pointer pointer;
+		typedef typename traits_type::reference reference;
 
 		// Member functions
 		// constructor
