@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 22:27:09 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/22 14:00:37 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		// typedef ft::map_iterator<value_type, node_type> iterator;
-		// typedef ft::map_iterator<const value_type, node_type> const_iterator;
+		// typedef ft::map_iterator<value_type> iterator;
+		// typedef ft::map_iterator<const value_type> const_iterator;
 		// typedef ft::reverse_iterator<iterator> reverse_iterator;
 		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
@@ -65,7 +65,7 @@ namespace ft
 		};
 
 		map()
-			: _comp_val(value_compare(_comp_key))
+			: _comp_val(key_compare()), _bst(_comp_val)
 		{
 		}
 
@@ -86,9 +86,7 @@ namespace ft
 		}
 
 	private:
-		key_compare _comp_key;
 		value_compare _comp_val;
-		// ft::rbtree<map<Key, T, Compare, Alloc> > _bst;
 		ft::rbtree<map> _bst;
 	};
 
