@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_traits.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 15:49:24 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/14 14:46:50 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/21 18:32:31 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,12 @@ namespace ft
 	};
 
 	template <>
+	struct is_integral<long long int>
+	{
+		static const bool value = true;
+	};
+
+	template <>
 	struct is_integral<unsigned char>
 	{
 		static const bool value = true;
@@ -114,6 +120,11 @@ namespace ft
 		static const bool value = true;
 	};
 
+	template <>
+	struct is_integral<unsigned long long int>
+	{
+		static const bool value = true;
+	};
 } // namespace ft
 
 #endif
