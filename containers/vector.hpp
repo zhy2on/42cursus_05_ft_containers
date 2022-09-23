@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/22 23:29:02 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/23 16:42:44 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ namespace ft
 
 		// constructor
 		explicit vector(const allocator_type &alloc = allocator_type())
-			: _allocator(alloc), _capacity(0), _size(0), _data(NULL)
+			: _size(0), _capacity(0), _allocator(alloc), _data(NULL)
 		{
 		} // default
 
 		explicit vector(size_type n, const value_type &val = value_type(),
 						const allocator_type &alloc = allocator_type())
-			: _allocator(alloc), _capacity(n), _size(n)
+			: _size(n), _capacity(n), _allocator(alloc)
 		{
 			_data = _allocator.allocate(_capacity);
 			for (size_type i = 0; i < _size; ++i)
@@ -77,7 +77,7 @@ namespace ft
 		} // range
 
 		vector(const vector &x)
-			: _allocator(x._allocator), _capacity(x._capacity), _size(x._size)
+			: _size(x._size), _capacity(x._capacity), _allocator(x._allocator)
 		{
 			_data = _allocator.allocate(_capacity);
 			for (size_type i = 0; i < _size; ++i)
