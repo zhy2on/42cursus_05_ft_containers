@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/25 17:04:23 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/25 17:45:06 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,13 +396,12 @@ namespace ft
 
 		void swap(vector &x)
 		{
-			vector<T> tmp;
-
 			if (this != &x)
 			{
-				tmp = x;
-				x = *this;
-				*this = tmp;
+				ft::swap(_data, x._data);
+				ft::swap(_allocator, x._allocator);
+				ft::swap(_size, x._size);
+				ft::swap(_capacity, x._capacity);
 			}
 		}
 
