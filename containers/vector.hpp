@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/25 13:44:04 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/25 14:40:34 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,10 +333,9 @@ namespace ft
 		void insert(iterator position, size_type n, const value_type &val)
 		{
 			size_type i = position - this->begin();
-			iterator origin_end = this->end();
 
 			this->reserve(_size + n);
-			for (iterator it = origin_end; it != position; --it)
+			for (iterator it = this->end(); it != this->begin() + i; --it)
 			{
 				*(it - 1 + n) = *(it - 1);
 			}
@@ -354,7 +353,6 @@ namespace ft
 			InputIterator last)
 		{
 			size_type i = position - this->begin();
-			iterator origin_end = this->end();
 			size_type n = 0;
 
 			for (InputIterator it = first; it != last; ++it)
@@ -362,7 +360,7 @@ namespace ft
 				++n;
 			}
 			this->reserve(_size + n);
-			for (iterator it = origin_end; it != position; --it)
+			for (iterator it = this->end(); it != this->begin() + i; --it)
 			{
 				*(it - 1 + n) = *(it - 1);
 			}
