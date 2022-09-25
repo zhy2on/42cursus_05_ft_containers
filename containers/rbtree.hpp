@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/21 23:20:18 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/26 04:05:36 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,43 +19,143 @@
 
 namespace ft
 {
-	template <typename Container>
+	enum
+	{
+		RED,
+		BLACK
+	};
+
+	template <typename Val>
+	struct rbtree_node
+	{
+		typedef Val value_type;
+		typedef rbtree_node<value_type> *node_ptr;
+		typedef const rbtree_node<value_type> *const_node_ptr;
+
+		value_type data;
+		node_ptr parent;
+		node_ptr left;
+		node_ptr right;
+		int color;
+
+		rbtree_node(value_type data, int color)
+			: parent(NULL), left(NULL), right(NULL), color(color), data(data)
+		{
+		}
+
+		static bool isTNULL(node_ptr x)
+		{
+			return (x->parent == NULL);
+		}
+
+		static bool isTNULL(const_node_ptr x)
+		{
+			return (x->parent == NULL);
+		}
+
+		static node_ptr minimum(node_ptr x)
+		{
+			while (!isTNULL(x->left))
+				x = x->left;
+			return x;
+		}
+		
+		static const_node_ptr minimum(const_node_ptr x)
+		{
+			while (!isTNULL(x->left))
+				x = x->left;
+			return x;
+		}
+
+		static node_ptr maximum(node_ptr x)
+		{
+			while (!isTNULL(x->right))
+				x = x->right;
+			return x;
+		}
+		
+		static const_node_ptr maximum(const_node_ptr x)
+		{
+			while (!isTNULL(x->right))
+				x = x->right;
+			return x;
+		}
+
+		static node_ptr increment(node_ptr x)
+		{
+			if (!isTNULL(x->right))
+			{
+				x = x->right;
+				while (!isTNULL(x->left))
+				{
+					x = x->left;
+				}
+			}
+			else
+			{
+				node_ptr y = x->parent;
+				while (x == y->right)
+				{
+					x = y;
+					y = y->parent;
+				}
+				if (x->right != y)
+				{
+					x = y;
+				}
+			}
+			return x;
+		}
+
+		static node_ptr decrement(node_ptr x)
+		{
+			if (x->color == RED && x->parent->parent == x)
+			{
+				x = x->right;
+			}
+			else if (!isTNULL(x->left))
+			{
+				node_ptr y = x->left;
+				while (!isTNULL(y->right))
+				{
+					y = y->right;
+				}
+				x = y;
+			}
+			else
+			{
+				node_ptr y = x->parent;
+				while (x == y->left)
+				{
+					x = y;
+					y = y->parent;
+				}
+				x = y;
+			}
+			return x;
+		}
+	};
+
+	template <typename Val,
+			  typename Compare = std::less<Val>,
+			  typename Alloc = std::allocator<Val> >
 	class rbtree
 	{
 	public:
 		// Member types
-		typedef typename Container::value_type value_type;
-		typedef typename Container::allocator_type allocator_type;
-		typedef typename Container::value_compare value_compare;
-		
-		enum
-		{
-			RED,
-			BLACK
-		};
+		typedef Val value_type;
+		typedef Alloc allocator_type;
+		typedef Compare value_compare;
 
-		struct node
-		{
-			value_type data;
-			node *parent;
-			node *left;
-			node *right;
-			int color;
-
-			node(value_type data, int color)
-				: parent(NULL), left(NULL), right(NULL), color(color), data(data)
-			{
-			}
-		};
-
-		typedef node node_type;
-		typedef node *node_pointer;
-		typedef std::allocator<node> node_allocator_type;
+		typedef rbtree_node<value_type> node_type;
+		typedef std::allocator<node_type> node_allocator_type;
+		typedef typename ft::rbtree_node<value_type>::node_ptr node_ptr;
+		typedef typename ft::rbtree_node<value_type>::const_node_ptr const_node_ptr;
 
 		// Member functions
 		// constructor
-		rbtree(value_compare comp_val)
-			: _comp_val(comp_val)
+		rbtree()
+			: _comp_val(value_compare())
 		{
 			_TNULL = _node_alloc.allocate(1);
 			node_type tmp(value_type(), BLACK);
@@ -64,46 +164,17 @@ namespace ft
 		}
 
 		// getRoot
-		const node_pointer getRoot() const
+		const node_ptr &getRoot() const
 		{
 			return _root;
-		}
-
-		// void inorder(node_pointer target)
-		// {
-		// 	if (target == _TNULL)
-		// 		return;
-		// 	inorder(target->left);
-		// 	std::cout << target->data.first << " ";
-		// 	inorder(target->right);
-		// }
-
-		// minimum: leftmost node
-		node_pointer minimum(const node_pointer x) const
-		{
-			while (x->left != _TNULL)
-			{
-				x = x->left;
-			}
-			return x;
-		}
-
-		// maximum: rightmost node
-		node_pointer maximum(const node_pointer x) const
-		{
-			while (x->right != _TNULL)
-			{
-				x = x->right;
-			}
-			return x;
 		}
 
 		// insertNode
 		void insertNode(const value_type &data)
 		{
-			node_pointer z = _getnode(NULL, data, RED);
-			node_pointer y = NULL;
-			node_pointer x = _root;
+			node_ptr z = _getnode(NULL, data, RED);
+			node_ptr y = NULL;
+			node_ptr x = _root;
 
 			while (x != _TNULL)
 			{
@@ -149,8 +220,8 @@ namespace ft
 		// deleteNode
 		bool deleteNode(const value_type &data)
 		{
-			node_pointer z = _searchKey(data);
-			node_pointer x, y;
+			node_ptr z = _searchKey(data);
+			node_ptr x, y;
 			// if key is not found
 			if (z == _TNULL)
 			{
@@ -199,9 +270,9 @@ namespace ft
 
 	private:
 		// Private member functions
-		node_pointer _getnode(node_pointer parent, const value_type &data, const int &color)
+		node_ptr _getnode(node_ptr parent, const value_type &data, const int &color)
 		{
-			node_pointer ptr = _node_alloc.allocate(1);
+			node_ptr ptr = _node_alloc.allocate(1);
 			node_type tmp(data, color);
 
 			tmp.parent = _TNULL;
@@ -212,9 +283,9 @@ namespace ft
 			return ptr;
 		}
 
-		void _leftRotate(node_pointer x)
+		void _leftRotate(node_ptr x)
 		{
-			node_pointer y = x->right;
+			node_ptr y = x->right;
 			x->right = y->left;
 			if (y->left != _TNULL)
 			{
@@ -237,9 +308,9 @@ namespace ft
 			x->parent = y;
 		}
 
-		void _rightRotate(node_pointer x)
+		void _rightRotate(node_ptr x)
 		{
-			node_pointer y = x->left;
+			node_ptr y = x->left;
 			x->left = y->right;
 			if (y->right != _TNULL)
 			{
@@ -262,12 +333,12 @@ namespace ft
 			x->parent = y;
 		}
 
-		void _insertFix(node_pointer k)
+		void _insertFix(node_ptr k)
 		{
 			// if parent is left child of grandparent, side is true else side is false
 			bool side = (k->parent == k->parent->parent->left);
 			// set uncle node
-			node_pointer u = side ? k->parent->parent->right : k->parent->parent->left;
+			node_ptr u = side ? k->parent->parent->right : k->parent->parent->left;
 
 			while (k != _root && k->parent->color == RED)
 			{
@@ -300,9 +371,9 @@ namespace ft
 			return !_comp_val(a, b) && !_comp_val(b, a);
 		}
 
-		node_pointer _searchKey(value_type data)
+		node_ptr _searchKey(value_type data)
 		{
-			node_pointer t = _root;
+			node_ptr t = _root;
 			
 			while (t != _TNULL && !_equal(data, t->data))
 			{
@@ -318,7 +389,7 @@ namespace ft
 			return t;
 		}
 
-		void _rbTransplant(node_pointer u, node_pointer v)
+		void _rbTransplant(node_ptr u, node_ptr v)
 		{
 			if (u->parent == NULL)
 			{
@@ -335,12 +406,12 @@ namespace ft
 			v->parent = u->parent;
 		}
 
-		void _deleteFix(node_pointer x)
+		void _deleteFix(node_ptr x)
 		{
 			// if x is left child, side is true else side is false
 			bool side = (x == x->parent->left);
 			// set sibling node
-			node_pointer s = side ? x->parent->right : x->parent->left;
+			node_ptr s = side ? x->parent->right : x->parent->left;
 
 			while (x != _root && x->color == BLACK)
 			{
@@ -381,8 +452,8 @@ namespace ft
 		}
 
 		// Member variables
-		node_pointer _root;
-		node_pointer _TNULL;
+		node_ptr _root;
+		node_ptr _TNULL;
 		value_compare _comp_val;
 		node_allocator_type _node_alloc;
 	};
