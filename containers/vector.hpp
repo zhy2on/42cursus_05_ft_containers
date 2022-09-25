@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/23 17:00:41 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/25 13:44:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,7 +386,7 @@ namespace ft
 			{
 				_allocator.destroy(&(*it));
 			}
-			for (iterator it = last + 1; it != this->end(); ++it)
+			for (iterator it = last; it != this->end(); ++it)
 			{
 				*(first + i) = *it;
 				++i;
