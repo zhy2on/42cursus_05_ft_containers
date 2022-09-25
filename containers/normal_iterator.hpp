@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/25 16:51:16 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/25 16:58:49 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ namespace ft
 		template <typename Iter>
 		normal_iterator &operator=(const normal_iterator<Iter> &rhs) // copy-assignment
 		{
-			if (this != &rhs)
-			{
-				_current = rhs.base();
-			}
+			_current = rhs.base();
 			return *this;
 		}
 
