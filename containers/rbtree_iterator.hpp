@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 03:01:12 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 05:41:01 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ namespace ft
 
 		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef std::ptrdiff_t difference_type;
-		typedef typename ft::rbtree_node<Val>::node_ptr node_ptr;
+		typedef ft::rbtree_node<Val> node_type;
+		typedef typename node_type::node_ptr node_ptr;
 
         // OCCF
 		rbtree_iterator() // default
@@ -67,7 +68,27 @@ namespace ft
 
 		rbtree_iterator &operator++()
 		{
-			_node = ft::rbtree_node<value_type>::increment(_node);
+			if (!node_type::isTNULL(_node->right))
+			{
+				_node = _node->right;
+				while (!node_type::isTNULL(_node->left))
+				{
+					_node = _node->left;
+				}
+			}
+			else
+			{
+				node_ptr y = _node->parent;
+				while (_node == y->right)
+				{
+					_node = y;
+					y = y->parent;
+				}
+				if (_node->right != y)
+				{
+					_node = y;
+				}
+			}
 			return *this;
 		}
 
@@ -80,7 +101,29 @@ namespace ft
 
 		rbtree_iterator &operator--()
 		{
-			_node = ft::rbtree_node<value_type>::decrement(_node);
+			if (_node->color == ft::RED && _node->parent->parent)
+			{
+				_node = _node->right;
+			}
+			else if (!node_type::isTNULL(_node->left))
+			{
+				node_ptr y = _node->left;
+				while (!node_type::isTNULL(_node->right))
+				{
+					y = y->right;
+				}
+				_node = y;
+			}
+			else
+			{
+				node_ptr y = _node->parent;
+				while (_node == y->left)
+				{
+					_node = y;
+					y = y->parent;
+				}
+				_node = y;
+			}
 			return *this;
 		}
 
@@ -120,7 +163,8 @@ namespace ft
 
 		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef std::ptrdiff_t difference_type;
-		typedef typename ft::rbtree_node<Val>::const_node_ptr node_ptr;
+		typedef ft::rbtree_node<Val> node_type;
+		typedef typename node_type::const_node_ptr node_ptr;
 
         // OCCF
 		rbtree_const_iterator() // default
@@ -158,7 +202,27 @@ namespace ft
 
 		rbtree_const_iterator &operator++()
 		{
-			_node = ft::rbtree_node<value_type>::increment(_node);
+			if (!node_type::isTNULL(_node->right))
+			{
+				_node = _node->right;
+				while (!node_type::isTNULL(_node->left))
+				{
+					_node = _node->left;
+				}
+			}
+			else
+			{
+				node_ptr y = _node->parent;
+				while (_node == y->right)
+				{
+					_node = y;
+					y = y->parent;
+				}
+				if (_node->right != y)
+				{
+					_node = y;
+				}
+			}
 			return *this;
 		}
 
@@ -171,7 +235,29 @@ namespace ft
 
 		rbtree_const_iterator &operator--()
 		{
-			_node = ft::rbtree_node<value_type>::decrement(_node);
+			if (_node->color == ft::RED && _node->parent->parent)
+			{
+				_node = _node->right;
+			}
+			else if (!node_type::isTNULL(_node->left))
+			{
+				node_ptr y = _node->left;
+				while (!node_type::isTNULL(_node->right))
+				{
+					y = y->right;
+				}
+				_node = y;
+			}
+			else
+			{
+				node_ptr y = _node->parent;
+				while (_node == y->left)
+				{
+					_node = y;
+					y = y->parent;
+				}
+				_node = y;
+			}
 			return *this;
 		}
 
