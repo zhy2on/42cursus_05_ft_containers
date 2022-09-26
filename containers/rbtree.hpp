@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 04:24:06 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 06:02:25 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,93 +45,23 @@ namespace ft
 
 		static bool isTNULL(node_ptr x)
 		{
-			return (x->parent == NULL);
-		}
-
-		static bool isTNULL(const_node_ptr x)
-		{
-			return (x->parent == NULL);
+			if (x->left == NULL)
+				return true;
+			else
+				return false;
 		}
 
 		static node_ptr minimum(node_ptr x)
 		{
-			while (!isTNULL(x->left))
+			while (!isTNULL(x) && !isTNULL(x->left))
 				x = x->left;
 			return x;
 		}
-		
+
 		static const_node_ptr minimum(const_node_ptr x)
 		{
-			while (!isTNULL(x->left))
+			while (!isTNULL(x) && !isTNULL(x->left))
 				x = x->left;
-			return x;
-		}
-
-		static node_ptr maximum(node_ptr x)
-		{
-			while (!isTNULL(x->right))
-				x = x->right;
-			return x;
-		}
-		
-		static const_node_ptr maximum(const_node_ptr x)
-		{
-			while (!isTNULL(x->right))
-				x = x->right;
-			return x;
-		}
-
-		static node_ptr increment(node_ptr x)
-		{
-			if (!isTNULL(x->right))
-			{
-				x = x->right;
-				while (!isTNULL(x->left))
-				{
-					x = x->left;
-				}
-			}
-			else
-			{
-				node_ptr y = x->parent;
-				while (x == y->right)
-				{
-					x = y;
-					y = y->parent;
-				}
-				if (x->right != y)
-				{
-					x = y;
-				}
-			}
-			return x;
-		}
-
-		static node_ptr decrement(node_ptr x)
-		{
-			if (x->color == RED && x->parent->parent == x)
-			{
-				x = x->right;
-			}
-			else if (!isTNULL(x->left))
-			{
-				node_ptr y = x->left;
-				while (!isTNULL(y->right))
-				{
-					y = y->right;
-				}
-				x = y;
-			}
-			else
-			{
-				node_ptr y = x->parent;
-				while (x == y->left)
-				{
-					x = y;
-					y = y->parent;
-				}
-				x = y;
-			}
 			return x;
 		}
 	};
@@ -254,12 +184,6 @@ namespace ft
 		bool deleteNode(node_ptr &z)
 		{
 			node_ptr x, y;
-			// if key is not found
-			if (z == _TNULL)
-			{
-				return false;
-			}
-			// if key is exist
 			y = z;
 			int y_original_color = y->color;
 			if (z->left == _TNULL)
