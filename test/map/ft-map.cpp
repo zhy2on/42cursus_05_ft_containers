@@ -8,5 +8,7 @@ int main()
 	m.insert(ft::make_pair('a', 1));
 
 	std::cout << m.find('a')->first << std::endl;
+	m.erase(m.begin());
+	std::cout << m.find('a')->first << std::endl;
 	return (0);
 }
