@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 06:04:09 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 06:16:55 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ namespace ft
 
 		~map()
 		{
-			// this->clear();
+			this->clear();
 		}
 
 		// Member functions
@@ -198,10 +198,11 @@ namespace ft
 
 		void clear()
 		{
-			// while (this->begin() != this->end())
-			// {
-			// 	this->erase(this->begin());
-			// }
+			/* 최적화 필요 */
+			while (this->begin() != this->end())
+			{
+				this->erase(this->begin());
+			}
 		}
 
 	private:
