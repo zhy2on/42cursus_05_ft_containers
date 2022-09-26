@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 02:25:42 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 03:01:12 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ namespace ft
     template <typename Val>
     class rbtree_iterator
     {
-    protected:
-		typename ft::rbtree_node<Val>::node_ptr _node;
-	
 	public:
 		typedef Val value_type;
 		typedef Val *pointer;
@@ -108,14 +105,14 @@ namespace ft
 		{
 			return !(*this == rhs);
 		}
+
+		// Member variables
+		node_ptr _node;
     };
 
 	template <typename Val>
     class rbtree_const_iterator
     {
-    protected:
-		typename ft::rbtree_node<Val>::const_node_ptr _node;
-	
 	public:
 		typedef Val value_type;
 		typedef const Val *pointer;
@@ -199,6 +196,9 @@ namespace ft
 		{
 			return !(*this == rhs);
 		}
+
+		// Member variables
+		node_ptr _node;
 	};
 } // namespace ft
 
