@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 00:28:03 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 01:02:09 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,15 @@ namespace ft
 		// constructor
 		rbtree()
 			: _comp_val(value_compare())
+		{
+			_TNULL = _node_alloc.allocate(1);
+			node_type tmp(value_type(), BLACK);
+			_node_alloc.construct(_TNULL, tmp);
+			_root = _TNULL;
+		}
+
+		rbtree(value_compare comp_val)
+			: _comp_val(comp_val)
 		{
 			_TNULL = _node_alloc.allocate(1);
 			node_type tmp(value_type(), BLACK);

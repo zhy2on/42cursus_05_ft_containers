@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 00:39:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 01:03:52 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,18 @@ namespace ft
 
 		// Constructor
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
-			: _comp_val(value_compare(comp))
+			: _comp_val(value_compare(comp)), _bst(_comp_val)
 		{
 		}
 
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
+			: _comp_val(value_compare(comp)), _bst(_comp_val)
 		{
 		}
 
 		map(const map &x)
-			: _comp_val(x._comp_val)
+			: _comp_val(x._comp_val), _bst(_comp_val)
 		{
 			for (const_iterator it = x.begin(); it != x.end(); it++)
 			{
@@ -96,8 +97,9 @@ namespace ft
 		ft::pair<iterator, bool> insert(const value_type &val)
 		{
 			node_ptr tmp = _bst.searchKey(val);
-			if (tmp != _bst.getTNULL())
+			if (tmp == _bst.getTNULL())
 			{
+				_bst.insertNode(val);
 				return ft::make_pair(iterator(tmp), true);
 			}
 			else
@@ -167,7 +169,7 @@ namespace ft
 
 	private:
 		value_compare _comp_val;
-		ft::rbtree<value_type> _bst;
+		ft::rbtree<value_type, value_compare, allocator_type> _bst;
 	};
 
 } // namespace ft
