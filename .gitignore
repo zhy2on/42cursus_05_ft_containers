@@ -2,3 +2,6 @@
 a.out
 std-vector
 ft-vector
+std-map
+ft-map
+*.dSYM
