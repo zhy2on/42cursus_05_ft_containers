@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 02:38:57 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 04:24:06 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,9 +251,8 @@ namespace ft
 		}
 
 		// deleteNode
-		bool deleteNode(const value_type &data)
+		bool deleteNode(node_ptr &z)
 		{
-			node_ptr z = searchKey(data);
 			node_ptr x, y;
 			// if key is not found
 			if (z == _TNULL)
@@ -294,6 +293,7 @@ namespace ft
 				y->color = z->color;
 			}
 			_node_alloc.deallocate(z, 1);
+			z = _TNULL;
 			if (y_original_color == BLACK)
 			{
 				_deleteFix(x);
@@ -308,7 +308,7 @@ namespace ft
 			node_ptr ptr = _node_alloc.allocate(1);
 			node_type tmp(data, color);
 
-			tmp.parent = _TNULL;
+			tmp.parent = parent;
 			tmp.left = _TNULL;
 			tmp.right = _TNULL;
 			_node_alloc.construct(ptr, tmp);
@@ -418,7 +418,10 @@ namespace ft
 			{
 				u->parent->right = v;
 			}
-			v->parent = u->parent;
+			if (v != _TNULL)
+			{
+				v->parent = u->parent;
+			}
 		}
 
 		void _deleteFix(node_ptr x)
