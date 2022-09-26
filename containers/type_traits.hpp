@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 15:49:24 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/22 23:29:25 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/26 22:38:55 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ namespace ft
 	};
 
 	template <>
-	struct is_integral<long long int>
+	struct is_integral<__int64_t>
 	{
 		static const bool value = true;
 	};
@@ -121,7 +121,7 @@ namespace ft
 	};
 
 	template <>
-	struct is_integral<unsigned long long int>
+	struct is_integral<__uint64_t>
 	{
 		static const bool value = true;
 	};
