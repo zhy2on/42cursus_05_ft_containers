@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 01:03:52 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 03:02:12 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,25 @@ namespace ft
 		value_compare value_comp() const
 		{
 			return value_compare(key_compare());
+		}
+
+		void erase(iterator position)
+		{
+			_bst.deleteNode(position._node);
+		}
+
+		size_type erase(const key_type &k)
+		{
+			node_ptr tmp = _bst.searchKey(value_type(k, mapped_type()));
+			return _bst.deleteNode(tmp);
+		}
+
+		void erase(iterator first, iterator last)
+		{
+			for (iterator it = first; it != last; ++it)
+			{
+				this->erase(it);
+			}
 		}
 
 	private:
