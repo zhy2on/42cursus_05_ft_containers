@@ -6,5 +6,5 @@
 int main()
 {
 	// ft::rbtree<ft::set<int> > _root;
-	ft::rbtree<ft::map<int, int> > _root;
+	// ft::rbtree<ft::map<int, int> > _root;
 }
