@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/26 04:05:36 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 00:28:03 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,8 @@ namespace ft
 
 		typedef rbtree_node<value_type> node_type;
 		typedef std::allocator<node_type> node_allocator_type;
-		typedef typename ft::rbtree_node<value_type>::node_ptr node_ptr;
-		typedef typename ft::rbtree_node<value_type>::const_node_ptr const_node_ptr;
+		typedef typename node_type::node_ptr node_ptr;
+		typedef typename node_type::const_node_ptr const_node_ptr;
 
 		// Member functions
 		// constructor
@@ -167,6 +167,30 @@ namespace ft
 		const node_ptr &getRoot() const
 		{
 			return _root;
+		}
+
+		// TNULL
+		const node_ptr &getTNULL() const
+		{
+			return _TNULL;
+		}
+
+		node_ptr searchKey(value_type data)
+		{
+			node_ptr t = _root;
+			
+			while (t != _TNULL && !_equal(data, t->data))
+			{
+				if (_comp_val(data, t->data))
+				{
+					t = t->left;
+				}
+				else
+				{
+					t = t->right;
+				}
+			}
+			return t;
 		}
 
 		// insertNode
@@ -220,7 +244,7 @@ namespace ft
 		// deleteNode
 		bool deleteNode(const value_type &data)
 		{
-			node_ptr z = _searchKey(data);
+			node_ptr z = searchKey(data);
 			node_ptr x, y;
 			// if key is not found
 			if (z == _TNULL)
@@ -369,24 +393,6 @@ namespace ft
 		bool _equal(const value_type &a, const value_type &b)
 		{
 			return !_comp_val(a, b) && !_comp_val(b, a);
-		}
-
-		node_ptr _searchKey(value_type data)
-		{
-			node_ptr t = _root;
-			
-			while (t != _TNULL && !_equal(data, t->data))
-			{
-				if (_comp_val(data, t->data))
-				{
-					t = t->left;
-				}
-				else
-				{
-					t = t->right;
-				}
-			}
-			return t;
 		}
 
 		void _rbTransplant(node_ptr u, node_ptr v)

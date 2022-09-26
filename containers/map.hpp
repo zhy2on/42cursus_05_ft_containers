@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/22 23:30:15 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 00:39:47 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "utility.hpp" // ft::pair
 #include "rbtree.hpp"
+#include "rbtree_iterator.hpp"
+#include "reverse_iterator.hpp"
 #include <functional> // std::less
 #include <cstddef>	  // std::ptrdiff_t, std::size_t
 #include <iostream>
@@ -39,13 +41,19 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		// typedef ft::map_iterator<value_type> iterator;
-		// typedef ft::map_iterator<const value_type> const_iterator;
-		// typedef ft::reverse_iterator<iterator> reverse_iterator;
-		// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::rbtree_iterator<value_type> iterator;
+		typedef ft::rbtree_const_iterator<value_type> const_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
 		typedef std::size_t size_type;
 
+	protected:
+		typedef ft::rbtree<value_type> tree_type;
+		typedef typename tree_type::node_type node_type;
+		typedef typename tree_type::node_ptr node_ptr;
+
+	public:
 		class value_compare
 		{
 			friend class map;
@@ -64,15 +72,87 @@ namespace ft
 			}
 		};
 
-		map()
-			: _comp_val(key_compare()), _bst(_comp_val)
+		// Constructor
+		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
+			: _comp_val(value_compare(comp))
 		{
 		}
 
-		// Member functions
-		void insert(value_type k)
+		template <class InputIterator>
+		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		{
-			_bst.insertNode(k);
+		}
+
+		map(const map &x)
+			: _comp_val(x._comp_val)
+		{
+			for (const_iterator it = x.begin(); it != x.end(); it++)
+			{
+				this->insert(*it);
+			}
+		}
+
+		// Member functions
+		ft::pair<iterator, bool> insert(const value_type &val)
+		{
+			node_ptr tmp = _bst.searchKey(val);
+			if (tmp != _bst.getTNULL())
+			{
+				return ft::make_pair(iterator(tmp), true);
+			}
+			else
+			{
+				return ft::make_pair(iterator(tmp), false);
+			}
+		}
+
+		size_type count(const key_type &k) const
+		{
+			size_type n = 0;
+			value_type tmp(k, mapped_type());
+
+			for (const_iterator it = this->begin(); it != this->end(); it++)
+			{
+				if (_bst._equal(tmp, it))
+				{
+					n++;
+				}
+			}
+			return n;
+		}
+
+		iterator begin(void)
+		{
+			node_ptr tmp = ft::rbtree_node<value_type>::minimum(_bst.getRoot());
+			return (iterator(tmp));
+		}
+
+		const_iterator begin(void) const
+		{
+			node_ptr tmp = ft::rbtree_node<value_type>::minimum(_bst.getRoot());
+			return (const_iterator(tmp));
+		}
+
+		iterator end()
+		{
+			return iterator(_bst.getTNULL());
+		}
+
+		const_iterator end() const
+		{
+			return const_iterator(_bst.getTNULL());
+		}
+
+		iterator find(const key_type &k)
+		{
+			value_type tmp(k, mapped_type());
+			return iterator(_bst.searchKey(tmp));
+		}
+
+		const_iterator find(const key_type &k) const
+		{
+			value_type tmp(k, mapped_type());
+			return const_iterator(_bst.searchKey(tmp));
 		}
 
 		key_compare key_comp() const
@@ -87,7 +167,7 @@ namespace ft
 
 	private:
 		value_compare _comp_val;
-		ft::rbtree<map> _bst;
+		ft::rbtree<value_type> _bst;
 	};
 
 } // namespace ft
