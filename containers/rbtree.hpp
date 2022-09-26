@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 01:02:09 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 02:38:57 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ namespace ft
 			}
 			else
 			{
-				y = minimum(z->right);
+				y = ft::rbtree_node<value_type>::minimum(z->right);
 				y_original_color = y->color;
 				x = y->right;
 				if (y->parent == z)
@@ -293,7 +293,7 @@ namespace ft
 				y->left->parent = y;
 				y->color = z->color;
 			}
-			_node_alloc.deallocate(z);
+			_node_alloc.deallocate(z, 1);
 			if (y_original_color == BLACK)
 			{
 				_deleteFix(x);
@@ -368,13 +368,13 @@ namespace ft
 
 		void _insertFix(node_ptr k)
 		{
-			// if parent is left child of grandparent, side is true else side is false
-			bool side = (k->parent == k->parent->parent->left);
-			// set uncle node
-			node_ptr u = side ? k->parent->parent->right : k->parent->parent->left;
-
 			while (k != _root && k->parent->color == RED)
 			{
+				// if parent is left child of grandparent, side is true else side is false
+				bool side = (k->parent == k->parent->parent->left);
+				// set uncle node
+				node_ptr u = side ? k->parent->parent->right : k->parent->parent->left;
+
 				if (u->color == RED)
 				{
 					// if uncle's color is RED -> recoloring
@@ -423,13 +423,14 @@ namespace ft
 
 		void _deleteFix(node_ptr x)
 		{
-			// if x is left child, side is true else side is false
-			bool side = (x == x->parent->left);
-			// set sibling node
-			node_ptr s = side ? x->parent->right : x->parent->left;
-
 			while (x != _root && x->color == BLACK)
 			{
+				// if x is left child, side is true else side is false
+				bool side = (x == x->parent->left);
+
+				// set sibling node
+				node_ptr s = side ? x->parent->right : x->parent->left;
+
 				// case 1
 				if (s->color == RED)
 				{
