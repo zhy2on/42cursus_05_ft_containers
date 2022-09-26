@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 03:02:12 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 06:04:09 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ namespace ft
 			}
 		}
 
+		~map()
+		{
+			// this->clear();
+		}
+
 		// Member functions
 		ft::pair<iterator, bool> insert(const value_type &val)
 		{
@@ -123,13 +128,13 @@ namespace ft
 			return n;
 		}
 
-		iterator begin(void)
+		iterator begin()
 		{
 			node_ptr tmp = ft::rbtree_node<value_type>::minimum(_bst.getRoot());
 			return (iterator(tmp));
 		}
 
-		const_iterator begin(void) const
+		const_iterator begin() const
 		{
 			node_ptr tmp = ft::rbtree_node<value_type>::minimum(_bst.getRoot());
 			return (const_iterator(tmp));
@@ -175,7 +180,12 @@ namespace ft
 		size_type erase(const key_type &k)
 		{
 			node_ptr tmp = _bst.searchKey(value_type(k, mapped_type()));
-			return _bst.deleteNode(tmp);
+			if (tmp != _bst.getTNULL())
+			{
+				_bst.deleteNode(tmp);
+				return 1;
+			}
+			return 0;
 		}
 
 		void erase(iterator first, iterator last)
@@ -184,6 +194,14 @@ namespace ft
 			{
 				this->erase(it);
 			}
+		}
+
+		void clear()
+		{
+			// while (this->begin() != this->end())
+			// {
+			// 	this->erase(this->begin());
+			// }
 		}
 
 	private:
