@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/26 22:39:02 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/27 02:19:41 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,16 @@ namespace ft
 		{
 			return &(_node->data);
 		}
+
+		bool operator==(const rbtree_iterator &rhs)
+		{
+			return (_node == rhs._node);
+		}
+
+		bool operator!=(const rbtree_iterator &rhs)
+		{
+			return !(lhs == rhs);
+		}
     };
 
 	template <typename Val>
@@ -179,7 +189,17 @@ namespace ft
 		{
 			return &(_node->data);
 		}
-    };
+
+		bool operator==(const rbtree_const_iterator &rhs)
+		{
+			return (_node == rhs._node);
+		}
+
+		bool operator!=(const rbtree_const_iterator &rhs)
+		{
+			return !(lhs == rhs);
+		}
+	};
 } // namespace ft
 
 #endif
