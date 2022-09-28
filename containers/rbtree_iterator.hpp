@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 02:18:31 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 05:09:36 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ namespace ft
 
 		self_type &operator++()
 		{
-			_node = node_type::increment(_node);
+			_node = _increment(_node);
 			return *this;
 		}
 
@@ -82,29 +82,7 @@ namespace ft
 
 		self_type &operator--()
 		{
-			if (_node->color == ft::RED && _node->parent->parent)
-			{
-				_node = _node->right;
-			}
-			else if (!node_type::isTNULL(_node->left))
-			{
-				node_ptr y = _node->left;
-				while (!node_type::isTNULL(_node->right))
-				{
-					y = y->right;
-				}
-				_node = y;
-			}
-			else
-			{
-				node_ptr y = _node->parent;
-				while (_node == y->left)
-				{
-					_node = y;
-					y = y->parent;
-				}
-				_node = y;
-			}
+			_node = _decrement(_node);
 			return *this;
 		}
 
@@ -132,7 +110,57 @@ namespace ft
 
 		// Member variables
 		node_ptr _node;
-    };
+
+		private:
+			node_ptr _increment(node_ptr x)
+			{
+				// Case 1: right child exist, return leftmost node
+				if (!node_type::isTNULL(x->right))
+				{
+					return node_type::minimum(x->right);
+				}
+				// backup _TNULL
+				node_ptr _TNULL = x->right;
+				// Case 2: up until it came from left
+				while (x->parent)
+				{
+					if (x->parent->left == x)
+					{
+						return x->parent;
+					}
+					x = x->parent;
+				}
+				// Case 3: return TNULL
+				return _TNULL;
+			}
+
+			node_ptr _decrement(node_ptr x)
+			{
+				// Case 0: if x is end
+				if (node_type::isTNULL(x))
+				{
+					return node_type::maximum(x->parent);
+				}
+				// Case 1: left child exist, return rightmost node
+				if (!node_type::isTNULL(x->left))
+				{
+					return node_type::maximum(x->left);
+				}
+				// backup _TNULL
+				node_ptr _TNULL = x->left;
+				// Case 2: up until it came from right
+				while (x->parent)
+				{
+					if (x->parent->right == x)
+					{
+						return x->parent;
+					}
+					x = x->parent;
+				}
+				// Case 3: return NULL
+				return NULL;
+			}
+	};
 
 	template <typename Val>
     class rbtree_const_iterator
@@ -184,27 +212,7 @@ namespace ft
 
 		self_type &operator++()
 		{
-			if (!node_type::isTNULL(_node->right))
-			{
-				_node = _node->right;
-				while (!node_type::isTNULL(_node->left))
-				{
-					_node = _node->left;
-				}
-			}
-			else
-			{
-				node_ptr y = _node->parent;
-				while (_node == y->right)
-				{
-					_node = y;
-					y = y->parent;
-				}
-				if (_node->right != y)
-				{
-					_node = y;
-				}
-			}
+			_node = _increment(_node);
 			return *this;
 		}
 
@@ -217,29 +225,7 @@ namespace ft
 
 		rbtree_const_iterator &operator--()
 		{
-			if (_node->color == ft::RED && _node->parent->parent)
-			{
-				_node = _node->right;
-			}
-			else if (!node_type::isTNULL(_node->left))
-			{
-				node_ptr y = _node->left;
-				while (!node_type::isTNULL(_node->right))
-				{
-					y = y->right;
-				}
-				_node = y;
-			}
-			else
-			{
-				node_ptr y = _node->parent;
-				while (_node == y->left)
-				{
-					_node = y;
-					y = y->parent;
-				}
-				_node = y;
-			}
+			_node = _decrement(_node);
 			return *this;
 		}
 
@@ -267,6 +253,56 @@ namespace ft
 
 		// Member variables
 		node_ptr _node;
+
+		private:
+			node_ptr _increment(node_ptr x)
+			{
+				// Case 1: right child exist, return leftmost node
+				if (!node_type::isTNULL(x->right))
+				{
+					return node_type::minimum(x->right);
+				}
+				// backup _TNULL
+				node_ptr _TNULL = x->right;
+				// Case 2: up until it came from left
+				while (x->parent)
+				{
+					if (x->parent->left == x)
+					{
+						return x->parent;
+					}
+					x = x->parent;
+				}
+				// Case 3: return TNULL
+				return _TNULL;
+			}
+
+			node_ptr _decrement(node_ptr x)
+			{
+				// Case 0: if x is end
+				if (node_type::isTNULL(x))
+				{
+					return node_type::maximum(x->parent);
+				}
+				// Case 1: left child exist, return rightmost node
+				if (!node_type::isTNULL(x->left))
+				{
+					return node_type::maximum(x->left);
+				}
+				// backup _TNULL
+				node_ptr _TNULL = x->left;
+				// Case 2: up until it came from right
+				while (x->parent)
+				{
+					if (x->parent->right == x)
+					{
+						return x->parent;
+					}
+					x = x->parent;
+				}
+				// Case 3: return NULL
+				return NULL;
+			}
 	};
 } // namespace ft
 

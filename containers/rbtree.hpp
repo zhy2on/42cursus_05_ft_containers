@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 02:59:31 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 05:07:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,48 +67,18 @@ namespace ft
 			return x;
 		}
 
-		static node_ptr increment(node_ptr x)
+		static node_ptr maximum(node_ptr x)
 		{
-			// Case 1: right child exist, return leftmost node
-			if (!isTNULL(x->right))
-			{
-				return minimum(x->right);
-			}
-			// backup _TNULL
-			node_ptr _TNULL = x->right;
-			// Case 2: up until it came from left
-			while (x->parent)
-			{
-				if (x->parent->left == x)
-				{
-					return x->parent;
-				}
-				x = x->parent;
-			}
-			// Case 3: return TNULL
-			return _TNULL;
+			while (x && !isTNULL(x->right))
+				x = x->right;
+			return x;
 		}
 
-		static const_node_ptr increment(const_node_ptr x)
+		static const_node_ptr maximum(const_node_ptr x)
 		{
-			// Case 1: right child exist, return leftmost node
-			if (!isTNULL(x->right))
-			{
-				return minimum(x->right);
-			}
-			// backup _TNULL
-			node_ptr _TNULL = x->right;
-			// Case 2: up until it came from left
-			while (x->parent)
-			{
-				if (x->parent->left == x)
-				{
-					return x->parent;
-				}
-				x = x->parent;
-			}
-			// Case 3: return _TNULL
-			return _TNULL;
+			while (x && !isTNULL(x->right))
+				x = x->right;
+			return x;
 		}
 	};
 
@@ -136,6 +106,7 @@ namespace ft
 		{
 			_TNULL = _getnode(node_type(NULL, NULL, NULL, value_type(), BLACK));
 			_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
+			_TNULL->parent = _root;
 		}
 
 		// getRoot
@@ -169,106 +140,17 @@ namespace ft
 		}
 
 		// insertNode
-		void insertNode(const value_type &data)
+		void rbInsert(const value_type &data)
 		{
-			node_ptr z = _getnode(node_type(NULL, _TNULL, _TNULL, data, RED));
-			node_ptr y = NULL;
-			node_ptr x = _root;
-
-			if (_root->color == RED)
-			{
-				_root = z;
-				_root->color = BLACK;
-				return;
-			}
-
-			while (x != _TNULL)
-			{
-				y = x;
-				if (_comp(z->data.first, x->data.first)) // data < x->data
-				{
-					x = x->left;
-				}
-				else
-				{
-					x = x->right;
-				}
-			}
-
-			z->parent = y;
-
-			if (y == NULL)
-			{
-				_root = z;
-			}
-			else if (_comp(z->data.first, y->data.first))
-			{
-				y->left = z;
-			}
-			else
-			{
-				y->right = z;
-			}
-
-			// if Z is root node
-			if (z->parent == NULL)
-			{
-				z->color = BLACK;
-				return;
-			}
-
-			// if Z's parent is root node. No need fix up.
-			if (z->parent->parent == NULL)
-			{
-				return;
-			}
-
-			_insertFix(z);
+			_insertNode(data);
+			_TNULL->parent = _root;
 		}
 
 		// deleteNode
-		bool deleteNode(node_ptr &z)
+		bool rbDelete(node_ptr &z)
 		{
-			node_ptr x, y;
-			y = z;
-			int y_original_color = y->color;
-			if (z->left == _TNULL)
-			{
-				x = z->right;
-				_rbTransplant(z, z->right);
-			}
-			else if (z->right == _TNULL)
-			{
-				x = z->left;
-				_rbTransplant(z, z->left);
-			}
-			else
-			{
-				y = node_type::minimum(z->right);
-				y_original_color = y->color;
-				x = y->right;
-				if (y->parent == z)
-				{
-					x->parent = y;
-				}
-				else
-				{
-					_rbTransplant(y, y->right);
-					y->right = z->right;
-					y->right->parent = y;
-				}
-				_rbTransplant(z, y);
-				y->left = z->left;
-				y->left->parent = y;
-				y->color = z->color;
-			}
-			_node_alloc.deallocate(z, 1);
-			z = _TNULL;
-			if (y_original_color == BLACK)
-			{
-				_deleteFix(x);
-			}
-			return true;
+			_deleteNode(z);
+			_TNULL->parent = _root;
 		}
 
 	private:
@@ -330,6 +212,63 @@ namespace ft
 			x->parent = y;
 		}
 
+		void _insertNode(const value_type &data)
+		{
+			node_ptr z = _getnode(node_type(NULL, _TNULL, _TNULL, data, RED));
+			node_ptr y = NULL;
+			node_ptr x = _root;
+
+			if (_root->color == RED)
+			{
+				_root = z;
+				_root->color = BLACK;
+				return;
+			}
+
+			while (x != _TNULL)
+			{
+				y = x;
+				if (_comp(z->data.first, x->data.first)) // data < x->data
+				{
+					x = x->left;
+				}
+				else
+				{
+					x = x->right;
+				}
+			}
+
+			z->parent = y;
+
+			if (y == NULL)
+			{
+				_root = z;
+			}
+			else if (_comp(z->data.first, y->data.first))
+			{
+				y->left = z;
+			}
+			else
+			{
+				y->right = z;
+			}
+
+			// if Z is root node
+			if (z->parent == NULL)
+			{
+				z->color = BLACK;
+				return;
+			}
+
+			// if Z's parent is root node. No need fix up.
+			if (z->parent->parent == NULL)
+			{
+				return;
+			}
+
+			_insertFix(z);
+		}
+
 		void _insertFix(node_ptr k)
 		{
 			while (k != _root && k->parent->color == RED)
@@ -386,6 +325,50 @@ namespace ft
 			{
 				v->parent = u->parent;
 			}
+		}
+
+		bool _deleteNode(node_ptr &z)
+		{
+			node_ptr x, y;
+			y = z;
+			int y_original_color = y->color;
+			if (z->left == _TNULL)
+			{
+				x = z->right;
+				_rbTransplant(z, z->right);
+			}
+			else if (z->right == _TNULL)
+			{
+				x = z->left;
+				_rbTransplant(z, z->left);
+			}
+			else
+			{
+				y = node_type::minimum(z->right);
+				y_original_color = y->color;
+				x = y->right;
+				if (y->parent == z)
+				{
+					x->parent = y;
+				}
+				else
+				{
+					_rbTransplant(y, y->right);
+					y->right = z->right;
+					y->right->parent = y;
+				}
+				_rbTransplant(z, y);
+				y->left = z->left;
+				y->left->parent = y;
+				y->color = z->color;
+			}
+			_node_alloc.deallocate(z, 1);
+			z = _TNULL;
+			if (y_original_color == BLACK)
+			{
+				_deleteFix(x);
+			}
+			return true;
 		}
 
 		void _deleteFix(node_ptr x)
