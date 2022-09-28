@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 02:20:12 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 05:48:21 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ namespace ft
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		{
+			for (const_iterator it = first; it != last; ++it)
+			{
+				this->insert(*it);
+			}
 		}
 
 		map(const map &x)
@@ -92,7 +96,7 @@ namespace ft
 
 		~map()
 		{
-			// this->clear();
+			this->clear();
 		}
 
 		// Member functions
@@ -101,7 +105,7 @@ namespace ft
 			node_ptr tmp = _bst.searchKey(val.first);
 			if (!tmp)
 			{
-				_bst.insertNode(val);
+				_bst.rbInsert(val);
 				return ft::make_pair(iterator(tmp), true);
 			}
 			else
@@ -193,7 +197,7 @@ namespace ft
 
 		void erase(iterator position)
 		{
-			_bst.deleteNode(position._node);
+			_bst.rbDelete(position._node);
 		}
 
 		size_type erase(const key_type &k)
@@ -201,7 +205,7 @@ namespace ft
 			node_ptr tmp = _bst.searchKey(k);
 			if (tmp)
 			{
-				_bst.deleteNode(tmp);
+				_bst.rbDelete(tmp);
 				return 1;
 			}
 			return 0;
@@ -217,11 +221,13 @@ namespace ft
 
 		void clear()
 		{
-			/* 최적화 필요 */
-			while (this->begin() != this->end())
+			iterator tmp = this->begin();
+			for (iterator it = ++this->begin(); it != this->end(); ++it)
 			{
-				this->erase(this->begin());
+				this->erase(tmp);
+				tmp = it;
 			}
+			this->erase(tmp);
 		}
 
 	private:
