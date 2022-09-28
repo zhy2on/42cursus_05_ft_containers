@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 02:18:43 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 02:27:34 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ namespace ft
 		rbtree()
 		{
 			_TNULL = _getnode(node_type(NULL, NULL, NULL, value_type(), BLACK));
-			_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), BLACK));
+			_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
 		}
 
 		// getRoot
@@ -149,7 +149,7 @@ namespace ft
 		node_ptr searchKey(key_type key)
 		{
 			node_ptr t = _root;
-			
+
 			while (t != NULL && !_equal(key, t->data.first))
 			{
 				if (_comp(key, t->data.first))
@@ -170,6 +170,13 @@ namespace ft
 			node_ptr z = _getnode(node_type(NULL, _TNULL, _TNULL, data, RED));
 			node_ptr y = NULL;
 			node_ptr x = _root;
+
+			if (_root->color == RED)
+			{
+				_root = z;
+				_root->color = BLACK;
+				return;
+			}
 
 			while (x != _TNULL)
 			{
