@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/28 19:14:04 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 00:06:26 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft
 		typedef std::size_t size_type;
 
 	protected:
-		typedef ft::rbtree<value_type> tree_type;
+		typedef ft::rbtree<key_type, mapped_type> tree_type;
 		typedef typename tree_type::node_type node_type;
 		typedef typename tree_type::node_ptr node_ptr;
 
@@ -74,18 +74,15 @@ namespace ft
 
 		// Constructor
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
-			: _comp_val(value_compare(comp)), _bst(_comp_val)
 		{
 		}
 
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
-			: _comp_val(value_compare(comp)), _bst(_comp_val)
 		{
 		}
 
 		map(const map &x)
-			: _comp_val(x._comp_val), _bst(_comp_val)
 		{
 			for (const_iterator it = x.begin(); it != x.end(); it++)
 			{
@@ -101,7 +98,7 @@ namespace ft
 		// Member functions
 		ft::pair<iterator, bool> insert(const value_type &val)
 		{
-			node_ptr tmp = _bst.searchKey(val);
+			node_ptr tmp = _bst.searchKey(val.first);
 			if (tmp == _bst.getTNULL())
 			{
 				_bst.insertNode(val);
@@ -134,11 +131,10 @@ namespace ft
 		size_type count(const key_type &k) const
 		{
 			size_type n = 0;
-			value_type tmp(k, mapped_type());
 
 			for (const_iterator it = this->begin(); it != this->end(); it++)
 			{
-				if (_bst._equal(tmp, it))
+				if (_bst._equal(k, it->first))
 				{
 					n++;
 				}
@@ -148,14 +144,12 @@ namespace ft
 
 		iterator begin()
 		{
-			node_ptr tmp = ft::rbtree_node<value_type>::minimum(_bst.getRoot());
-			return (iterator(tmp));
+			return (iterator(node_type::minimum(_bst.getRoot())));
 		}
 
 		const_iterator begin() const
 		{
-			node_ptr tmp = ft::rbtree_node<value_type>::minimum(_bst.getRoot());
-			return (const_iterator(tmp));
+			return (const_iterator(node_type::minimum(_bst.getRoot())));
 		}
 
 		iterator end()
@@ -170,14 +164,12 @@ namespace ft
 
 		iterator find(const key_type &k)
 		{
-			value_type tmp(k, mapped_type());
-			return iterator(_bst.searchKey(tmp));
+			return iterator(_bst.searchKey(k));
 		}
 
 		const_iterator find(const key_type &k) const
 		{
-			value_type tmp(k, mapped_type());
-			return const_iterator(_bst.searchKey(tmp));
+			return const_iterator(_bst.searchKey(k));
 		}
 
 		key_compare key_comp() const
@@ -197,7 +189,7 @@ namespace ft
 
 		size_type erase(const key_type &k)
 		{
-			node_ptr tmp = _bst.searchKey(value_type(k, mapped_type()));
+			node_ptr tmp = _bst.searchKey(k);
 			if (tmp != _bst.getTNULL())
 			{
 				_bst.deleteNode(tmp);
@@ -224,8 +216,7 @@ namespace ft
 		}
 
 	private:
-		value_compare _comp_val;
-		ft::rbtree<value_type, value_compare, allocator_type> _bst;
+		tree_type _bst;
 	};
 
 } // namespace ft

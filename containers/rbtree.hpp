@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 06:02:25 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 00:07:02 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ namespace ft
 	struct rbtree_node
 	{
 		typedef Val value_type;
-		typedef rbtree_node<value_type> *node_ptr;
-		typedef const rbtree_node<value_type> *const_node_ptr;
+		typedef rbtree_node<value_type> node_type;
+		typedef std::allocator<node_type> node_allocator_type;
+		typedef node_type *node_ptr;
+		typedef const node_type *const_node_ptr;
 
 		value_type data;
 		node_ptr parent;
@@ -66,35 +68,27 @@ namespace ft
 		}
 	};
 
-	template <typename Val,
-			  typename Compare = std::less<Val>,
-			  typename Alloc = std::allocator<Val> >
+	template <typename Key,
+			  typename T,
+			  typename Compare = std::less<Key>,
+			  typename Alloc = std::allocator<ft::pair<const Key, T> >
+			  >
 	class rbtree
 	{
 	public:
 		// Member types
-		typedef Val value_type;
-		typedef Alloc allocator_type;
-		typedef Compare value_compare;
-
+		typedef Key key_type;
+		typedef T mapped_type;
+		typedef ft::pair<const key_type, mapped_type> value_type;
+		typedef Compare key_compare;
 		typedef rbtree_node<value_type> node_type;
-		typedef std::allocator<node_type> node_allocator_type;
+		typedef typename node_type::node_allocator_type node_allocator_type;
 		typedef typename node_type::node_ptr node_ptr;
 		typedef typename node_type::const_node_ptr const_node_ptr;
 
 		// Member functions
 		// constructor
 		rbtree()
-			: _comp_val(value_compare())
-		{
-			_TNULL = _node_alloc.allocate(1);
-			node_type tmp(value_type(), BLACK);
-			_node_alloc.construct(_TNULL, tmp);
-			_root = _TNULL;
-		}
-
-		rbtree(value_compare comp_val)
-			: _comp_val(comp_val)
 		{
 			_TNULL = _node_alloc.allocate(1);
 			node_type tmp(value_type(), BLACK);
@@ -114,13 +108,13 @@ namespace ft
 			return _TNULL;
 		}
 
-		node_ptr searchKey(value_type data)
+		node_ptr searchKey(key_type key)
 		{
 			node_ptr t = _root;
 			
-			while (t != _TNULL && !_equal(data, t->data))
+			while (t != _TNULL && !_equal(key, t->data.first))
 			{
-				if (_comp_val(data, t->data))
+				if (_comp(key, t->data.first))
 				{
 					t = t->left;
 				}
@@ -142,7 +136,7 @@ namespace ft
 			while (x != _TNULL)
 			{
 				y = x;
-				if (_comp_val(z->data, x->data)) // data < x->data
+				if (_comp(z->data.first, x->data.first)) // data < x->data
 				{
 					x = x->left;
 				}
@@ -157,7 +151,7 @@ namespace ft
 			{
 				_root = z;
 			}
-			else if (_comp_val(z->data, y->data))
+			else if (_comp(z->data.first, y->data.first))
 			{
 				y->left = z;
 			}
@@ -323,9 +317,9 @@ namespace ft
 			_root->color = BLACK;
 		}
 
-		bool _equal(const value_type &a, const value_type &b)
+		bool _equal(const key_type &a, const key_type &b)
 		{
-			return !_comp_val(a, b) && !_comp_val(b, a);
+			return !_comp(a, b) && !_comp(b, a);
 		}
 
 		void _rbTransplant(node_ptr u, node_ptr v)
@@ -397,7 +391,7 @@ namespace ft
 		// Member variables
 		node_ptr _root;
 		node_ptr _TNULL;
-		value_compare _comp_val;
+		key_compare _comp;
 		node_allocator_type _node_alloc;
 	};
 } // namespace ft
