@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/28 23:56:12 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 00:22:52 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ namespace ft
 		typedef Val value_type;
 		typedef Val *pointer;
 		typedef Val &reference;
+		typedef rbtree_iterator<Val> self_type;
 
 		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef std::ptrdiff_t difference_type;
@@ -54,7 +55,7 @@ namespace ft
 		}
 
 		template <typename T>
-		rbtree_iterator &operator=(const rbtree_iterator<T> &rhs) // copy-assignment
+		self_type &operator=(const rbtree_iterator<T> &rhs) // copy-assignment
 		{
 			_node = rhs._node;
 			return *this;
@@ -66,7 +67,7 @@ namespace ft
 			return _node->data;
 		}
 
-		rbtree_iterator &operator++()
+		self_type &operator++()
 		{
 			if (!node_type::isTNULL(_node->right))
 			{
@@ -92,14 +93,14 @@ namespace ft
 			return *this;
 		}
 
-		rbtree_iterator operator++(int)
+		self_type operator++(int)
 		{
-			rbtree_iterator tmp(*this);
+			self_type tmp(*this);
 			++(*this);
 			return tmp;
 		}
 
-		rbtree_iterator &operator--()
+		self_type &operator--()
 		{
 			if (_node->color == ft::RED && _node->parent->parent)
 			{
@@ -127,9 +128,9 @@ namespace ft
 			return *this;
 		}
 
-		rbtree_iterator operator--(int)
+		self_type operator--(int)
 		{
-			rbtree_iterator tmp(*this);
+			self_type tmp(*this);
 			--(*this);
 			return tmp;
 		}
@@ -139,14 +140,14 @@ namespace ft
 			return &(_node->data);
 		}
 
-		bool operator==(const rbtree_iterator &rhs)
+		friend bool operator==(const self_type &lhs, const self_type &rhs)
 		{
-			return (_node == rhs._node);
+			return (lhs._node == rhs._node);
 		}
 
-		bool operator!=(const rbtree_iterator &rhs)
+		friend bool operator!=(const self_type &lhs, const self_type &rhs)
 		{
-			return !(*this == rhs);
+			return (lhs._node != rhs._node);
 		}
 
 		// Member variables
@@ -160,6 +161,7 @@ namespace ft
 		typedef Val value_type;
 		typedef const Val *pointer;
 		typedef const Val &reference;
+		typedef rbtree_const_iterator<Val> self_type;
 
 		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef std::ptrdiff_t difference_type;
@@ -188,7 +190,7 @@ namespace ft
 		}
 
 		template <typename T>
-		rbtree_const_iterator &operator=(const rbtree_const_iterator<T> &rhs) // copy-assignment
+		self_type &operator=(const rbtree_const_iterator<T> &rhs) // copy-assignment
 		{
 			_node = rhs._node;
 			return *this;
@@ -200,7 +202,7 @@ namespace ft
 			return _node->data;
 		}
 
-		rbtree_const_iterator &operator++()
+		self_type &operator++()
 		{
 			if (!node_type::isTNULL(_node->right))
 			{
@@ -226,9 +228,9 @@ namespace ft
 			return *this;
 		}
 
-		rbtree_const_iterator operator++(int)
+		self_type operator++(int)
 		{
-			rbtree_const_iterator tmp(*this);
+			self_type tmp(*this);
 			++(*this);
 			return tmp;
 		}
@@ -261,9 +263,9 @@ namespace ft
 			return *this;
 		}
 
-		rbtree_const_iterator operator--(int)
+		self_type operator--(int)
 		{
-			rbtree_const_iterator tmp(*this);
+			self_type tmp(*this);
 			--(*this);
 			return tmp;
 		}
@@ -273,14 +275,14 @@ namespace ft
 			return &(_node->data);
 		}
 
-		bool operator==(const rbtree_const_iterator &rhs)
+		friend bool operator==(const self_type &lhs, const self_type &rhs)
 		{
-			return (_node == rhs._node);
+			return (lhs._node == rhs._node);
 		}
 
-		bool operator!=(const rbtree_const_iterator &rhs)
+		friend bool operator!=(const self_type &lhs, const self_type &rhs)
 		{
-			return !(*this == rhs);
+			return (lhs._node != rhs._node);
 		}
 
 		// Member variables
