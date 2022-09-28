@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 00:07:02 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 02:18:43 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ namespace ft
 		node_ptr right;
 		int color;
 
-		rbtree_node(value_type data, int color)
-			: parent(NULL), left(NULL), right(NULL), color(color), data(data)
+		rbtree_node(node_ptr parent, node_ptr left, node_ptr right, value_type data, int color)
+			: parent(parent), left(left), right(right), color(color), data(data)
 		{
 		}
 
 		static bool isTNULL(node_ptr x)
 		{
-			if (x->left == NULL)
+			if (x && x->left == NULL)
 				return true;
 			else
 				return false;
@@ -55,16 +55,56 @@ namespace ft
 
 		static node_ptr minimum(node_ptr x)
 		{
-			while (!isTNULL(x) && !isTNULL(x->left))
+			while (x && !isTNULL(x->left))
 				x = x->left;
 			return x;
 		}
 
 		static const_node_ptr minimum(const_node_ptr x)
 		{
-			while (!isTNULL(x) && !isTNULL(x->left))
+			while (x && !isTNULL(x->left))
 				x = x->left;
 			return x;
+		}
+
+		static node_ptr increment(node_ptr x)
+		{
+			// Case 1: right child exist, return leftmost node
+			if (!isTNULL(x->right))
+			{
+				return minimum(x->right);
+			}
+			// Case 2: up until it came from left
+			while (x->parent)
+			{
+				if (x->parent->left == x)
+				{
+					return x->parent;
+				}
+				x = x->parent;
+			}
+			// Case 3: return TNULL
+			return NULL;
+		}
+
+		static const_node_ptr increment(const_node_ptr x)
+		{
+			// Case 1: right child exist, return leftmost node
+			if (!isTNULL(x->right))
+			{
+				return minimum(x->right);
+			}
+			// Case 2: up until it came from left
+			while (x->parent)
+			{
+				if (x->parent->left == x)
+				{
+					return x->parent;
+				}
+				x = x->parent;
+			}
+			// Case 3: return TNULL
+			return x->right;
 		}
 	};
 
@@ -90,10 +130,8 @@ namespace ft
 		// constructor
 		rbtree()
 		{
-			_TNULL = _node_alloc.allocate(1);
-			node_type tmp(value_type(), BLACK);
-			_node_alloc.construct(_TNULL, tmp);
-			_root = _TNULL;
+			_TNULL = _getnode(node_type(NULL, NULL, NULL, value_type(), BLACK));
+			_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), BLACK));
 		}
 
 		// getRoot
@@ -112,7 +150,7 @@ namespace ft
 		{
 			node_ptr t = _root;
 			
-			while (t != _TNULL && !_equal(key, t->data.first))
+			while (t != NULL && !_equal(key, t->data.first))
 			{
 				if (_comp(key, t->data.first))
 				{
@@ -129,7 +167,7 @@ namespace ft
 		// insertNode
 		void insertNode(const value_type &data)
 		{
-			node_ptr z = _getnode(NULL, data, RED);
+			node_ptr z = _getnode(node_type(NULL, _TNULL, _TNULL, data, RED));
 			node_ptr y = NULL;
 			node_ptr x = _root;
 
@@ -147,6 +185,7 @@ namespace ft
 			}
 
 			z->parent = y;
+
 			if (y == NULL)
 			{
 				_root = z;
@@ -160,12 +199,14 @@ namespace ft
 				y->right = z;
 			}
 
+			// if Z is root node
 			if (z->parent == NULL)
 			{
 				z->color = BLACK;
 				return;
 			}
 
+			// if Z's parent is root node. No need fix up.
 			if (z->parent->parent == NULL)
 			{
 				return;
@@ -177,6 +218,8 @@ namespace ft
 		// deleteNode
 		bool deleteNode(node_ptr &z)
 		{
+			if (!z)
+				return false;
 			node_ptr x, y;
 			y = z;
 			int y_original_color = y->color;
@@ -192,7 +235,7 @@ namespace ft
 			}
 			else
 			{
-				y = ft::rbtree_node<value_type>::minimum(z->right);
+				y = node_type::minimum(z->right);
 				y_original_color = y->color;
 				x = y->right;
 				if (y->parent == z)
@@ -221,16 +264,10 @@ namespace ft
 
 	private:
 		// Private member functions
-		node_ptr _getnode(node_ptr parent, const value_type &data, const int &color)
+		node_ptr _getnode(node_type tmp)
 		{
 			node_ptr ptr = _node_alloc.allocate(1);
-			node_type tmp(data, color);
-
-			tmp.parent = parent;
-			tmp.left = _TNULL;
-			tmp.right = _TNULL;
 			_node_alloc.construct(ptr, tmp);
-
 			return ptr;
 		}
 
@@ -296,8 +333,8 @@ namespace ft
 				if (u->color == RED)
 				{
 					// if uncle's color is RED -> recoloring
-					u->color = BLACK;
 					k->parent->color = BLACK;
+					u->color = BLACK;
 					k->parent->parent->color = RED;
 					k = k->parent->parent;
 				}
