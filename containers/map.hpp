@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/27 06:16:55 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/28 19:14:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,24 @@ namespace ft
 			else
 			{
 				return ft::make_pair(iterator(tmp), false);
+			}
+		}
+
+		iterator insert (iterator position, const value_type& val)
+		{
+			(void)position;
+			return this->insert(val).first;
+		}
+
+		template <class InputIterator>
+		void insert (
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+			InputIterator last)
+		{
+			for (InputIterator it = first; it != last; ++it)
+			{
+				std::cout << it->first << std::endl;
+				this->insert(*it);
 			}
 		}
 
