@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 00:06:26 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 02:20:12 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,21 @@ namespace ft
 
 		~map()
 		{
-			this->clear();
+			// this->clear();
 		}
 
 		// Member functions
 		ft::pair<iterator, bool> insert(const value_type &val)
 		{
 			node_ptr tmp = _bst.searchKey(val.first);
-			if (tmp == _bst.getTNULL())
+			if (!tmp)
 			{
 				_bst.insertNode(val);
 				return ft::make_pair(iterator(tmp), true);
 			}
 			else
 			{
-				return ft::make_pair(iterator(tmp), false);
+				return ft::make_pair(iterator(this->end()), false);
 			}
 		}
 
@@ -124,6 +124,7 @@ namespace ft
 			for (InputIterator it = first; it != last; ++it)
 			{
 				std::cout << it->first << std::endl;
+				std::cout << "TNULL: " << _bst.getTNULL() << std::endl;
 				this->insert(*it);
 			}
 		}
@@ -164,12 +165,20 @@ namespace ft
 
 		iterator find(const key_type &k)
 		{
-			return iterator(_bst.searchKey(k));
+			iterator tmp = _bst.searchKey(k);
+			if (tmp)
+				return iterator(tmp);
+			else
+				return this->end();
 		}
 
 		const_iterator find(const key_type &k) const
 		{
-			return const_iterator(_bst.searchKey(k));
+			const_iterator tmp = _bst.searchKey(k);
+			if (tmp)
+				return const_iterator(tmp);
+			else
+				return this->end();
 		}
 
 		key_compare key_comp() const
@@ -190,7 +199,7 @@ namespace ft
 		size_type erase(const key_type &k)
 		{
 			node_ptr tmp = _bst.searchKey(k);
-			if (tmp != _bst.getTNULL())
+			if (tmp)
 			{
 				_bst.deleteNode(tmp);
 				return 1;
