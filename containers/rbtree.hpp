@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 05:07:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 05:23:47 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,13 @@ namespace ft
 		}
 
 		// deleteNode
-		bool rbDelete(node_ptr &z)
+		void rbDelete(node_ptr &z)
 		{
 			_deleteNode(z);
+			if (_root == _TNULL)
+			{
+				_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
+			}
 			_TNULL->parent = _root;
 		}
 
@@ -220,6 +224,7 @@ namespace ft
 
 			if (_root->color == RED)
 			{
+				_node_alloc.deallocate(_root, 1);
 				_root = z;
 				_root->color = BLACK;
 				return;
