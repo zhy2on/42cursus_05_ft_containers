@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 02:27:34 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 02:59:31 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ namespace ft
 			{
 				return minimum(x->right);
 			}
+			// backup _TNULL
+			node_ptr _TNULL = x->right;
 			// Case 2: up until it came from left
 			while (x->parent)
 			{
@@ -84,7 +86,7 @@ namespace ft
 				x = x->parent;
 			}
 			// Case 3: return TNULL
-			return NULL;
+			return _TNULL;
 		}
 
 		static const_node_ptr increment(const_node_ptr x)
@@ -94,6 +96,8 @@ namespace ft
 			{
 				return minimum(x->right);
 			}
+			// backup _TNULL
+			node_ptr _TNULL = x->right;
 			// Case 2: up until it came from left
 			while (x->parent)
 			{
@@ -103,8 +107,8 @@ namespace ft
 				}
 				x = x->parent;
 			}
-			// Case 3: return TNULL
-			return x->right;
+			// Case 3: return _TNULL
+			return _TNULL;
 		}
 	};
 
@@ -225,8 +229,6 @@ namespace ft
 		// deleteNode
 		bool deleteNode(node_ptr &z)
 		{
-			if (!z)
-				return false;
 			node_ptr x, y;
 			y = z;
 			int y_original_color = y->color;
