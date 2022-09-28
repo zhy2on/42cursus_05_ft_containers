@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 00:22:52 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 02:18:31 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
 
         // OCCF
 		rbtree_iterator() // default
-			: _node(NULL)
+			: _node(0)
 		{
 		}
 
@@ -69,27 +69,7 @@ namespace ft
 
 		self_type &operator++()
 		{
-			if (!node_type::isTNULL(_node->right))
-			{
-				_node = _node->right;
-				while (!node_type::isTNULL(_node->left))
-				{
-					_node = _node->left;
-				}
-			}
-			else
-			{
-				node_ptr y = _node->parent;
-				while (_node == y->right)
-				{
-					_node = y;
-					y = y->parent;
-				}
-				if (_node->right != y)
-				{
-					_node = y;
-				}
-			}
+			_node = node_type::increment(_node);
 			return *this;
 		}
 
