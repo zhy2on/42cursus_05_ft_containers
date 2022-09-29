@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 04:56:31 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 05:54:34 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ namespace ft
 			if (this != &x)
 			{
 				this->clear();
-				for (const_iterator it = x.begin(); it != x.end(); it++)
+				for (const_iterator it = x.begin(); it != x.end(); ++it)
 				{
 					this->insert(*it);
 				}
@@ -175,17 +175,12 @@ namespace ft
 		// Capacity
 		bool empty() const
 		{
-			return (_bst.getRoot()->color == RED);
+			return (_bst.size() == 0);
 		}
 
 		size_type size() const
 		{
-			size_t n = 0;
-			for (const_iterator it = this->begin(); it != this->end(); ++it)
-			{
-				++n;
-			}
-			return n;
+			return _bst.size();
 		}
 
 		size_type max_size() const
@@ -304,11 +299,11 @@ namespace ft
 		{
 			size_type n = 0;
 
-			for (const_iterator it = this->begin(); it != this->end(); it++)
+			for (const_iterator it = this->begin(); it != this->end(); ++it)
 			{
 				if (_bst.equal(k, it->first))
 				{
-					n++;
+					++n;
 				}
 			}
 			return n;

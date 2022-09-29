@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 04:35:50 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 05:49:06 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ namespace ft
 		typedef Key key_type;
 		typedef Val value_type;
 		typedef Compare key_compare;
+		typedef std::size_t size_type;
 		typedef rbtree_node<value_type> node_type;
 		typedef typename node_type::node_allocator_type node_allocator_type;
 		typedef typename node_type::node_ptr node_ptr;
@@ -110,6 +111,7 @@ namespace ft
 
 		// Member functions
 		rbtree()
+			: _size(0)
 		{
 			_TNULL = _getnode(node_type(NULL, NULL, NULL, value_type(), BLACK));
 			_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
@@ -159,6 +161,7 @@ namespace ft
 
 		node_ptr rbInsert(const value_type &data)
 		{
+			++_size;
 			node_ptr ret = _insertNode(data);
 			_TNULL->parent = _root;
 			return ret;
@@ -166,6 +169,7 @@ namespace ft
 
 		void rbDelete(const node_ptr &z)
 		{
+			--_size;
 			_deleteNode(z);
 			if (_root == _TNULL)
 			{
@@ -176,10 +180,16 @@ namespace ft
 
 		void swap(rbtree &x)
 		{
+			ft::swap(_size, x._size);
 			ft::swap(_root, x._root);
 			ft::swap(_TNULL, x._TNULL);
 			ft::swap(_comp, x._comp);
 			ft::swap(_node_alloc, x._node_alloc);
+		}
+
+		size_type size() const
+		{
+			return _size;
 		}
 
 	private:
@@ -441,6 +451,7 @@ namespace ft
 		}
 
 		// Member variables
+		size_type _size;
 		node_ptr _root;
 		node_ptr _TNULL;
 		key_compare _comp;
