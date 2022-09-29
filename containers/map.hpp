@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 19:43:23 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 19:49:42 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,7 @@ namespace ft
 
 			for (const_iterator it = this->begin(); it != this->end(); it++)
 			{
-				if (_bst._equal(k, it->first))
+				if (_bst.equal(k, it->first))
 				{
 					n++;
 				}
@@ -303,6 +303,7 @@ namespace ft
 
 	private:
 		tree_type _bst;
+		key_compare _comp;
 	};
 
 } // namespace ft
