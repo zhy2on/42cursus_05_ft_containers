@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 05:09:36 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 13:02:05 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,13 @@ namespace ft
 			return *this;
 		}
 
+		template <typename T>
+		self_type &operator=(const rbtree_iterator<T> &rhs) // copy-assignment
+		{
+			_node = rhs._node;
+			return *this;
+		}
+
 		// operators
 		reference operator*() const
 		{
@@ -304,6 +311,30 @@ namespace ft
 				return NULL;
 			}
 	};
+
+	template <typename Val>
+	bool operator==(const rbtree_iterator<Val> &lhs, const rbtree_const_iterator<Val> &rhs)
+	{
+		return (lhs._node == rhs._node);
+	}
+
+	template <typename Val>
+	bool operator!=(const rbtree_iterator<Val> &lhs, const rbtree_const_iterator<Val> &rhs)
+	{
+		return (lhs._node != rhs._node);
+	}
+
+	template <typename Val>
+	bool operator==(const rbtree_const_iterator<Val> &lhs, const rbtree_iterator<Val> &rhs)
+	{
+		return (lhs._node == rhs._node);
+	}
+
+	template <typename Val>
+	bool operator!=(const rbtree_const_iterator<Val> &lhs, const rbtree_iterator<Val> &rhs)
+	{
+		return (lhs._node != rhs._node);
+	}
 } // namespace ft
 
 #endif
