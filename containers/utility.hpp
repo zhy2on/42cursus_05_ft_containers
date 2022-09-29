@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:21:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/22 23:28:44 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 05:00:31 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ namespace ft
     template <typename T1, typename T2>
     bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
     {
-        return lhs.first == rhs.first && lhs.second == rhs.second;
+        return (lhs.first == rhs.first && lhs.second == rhs.second);
     }
 
     template <typename T1, typename T2>
@@ -73,7 +73,7 @@ namespace ft
     template <typename T1, typename T2>
     bool operator<(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
     {
-        return lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second);
+        return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
     }
 
     template <typename T1, typename T2>
@@ -85,7 +85,7 @@ namespace ft
     template <typename T1, typename T2>
     bool operator>(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
     {
-        return rhs < lhs;
+        return (rhs < lhs);
     }
 
     template <typename T1, typename T2>

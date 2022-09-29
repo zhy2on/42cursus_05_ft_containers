@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 04:52:00 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 04:59:47 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft
 			(void)alloc;
 		}
 
-		template <class InputIterator>
+		template <typename InputIterator>
 		set(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		{
 			(void)comp;
@@ -198,7 +198,7 @@ namespace ft
 			return this->insert(val).first;
 		}
 
-		template <class InputIterator>
+		template <typename InputIterator>
 		void insert(
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 			InputIterator last)
@@ -321,7 +321,7 @@ namespace ft
 	template <typename Key, typename Compare, typename Alloc>
 	bool operator==(const set<Key, Compare, Alloc> &lhs, const set<Key, Compare, Alloc> &rhs)
 	{
-		return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <typename Key, typename Compare, typename Alloc>

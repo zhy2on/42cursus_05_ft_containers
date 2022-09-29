@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 22:57:28 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 04:55:07 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ namespace ft
 		typedef Val *pointer;
 		typedef Val &reference;
 		typedef rbtree_iterator<Val> self_type;
-
 		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef std::ptrdiff_t difference_type;
 		typedef ft::rbtree_node<Val> node_type;
@@ -168,7 +167,6 @@ namespace ft
 		typedef const Val *pointer;
 		typedef const Val &reference;
 		typedef rbtree_const_iterator<Val> self_type;
-
 		typedef ft::bidirectional_iterator_tag iterator_category;
 		typedef std::ptrdiff_t difference_type;
 		typedef ft::rbtree_node<Val> node_type;

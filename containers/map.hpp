@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 03:56:12 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 04:56:31 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include "reverse_iterator.hpp"
 #include <functional> // std::less
 #include <cstddef>	  // std::ptrdiff_t, std::size_t
-#include <iostream>
 
 namespace ft
 {

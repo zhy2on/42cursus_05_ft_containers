@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/25 16:58:49 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 04:56:09 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,42 +131,42 @@ namespace ft
 	};
 
 	// Non-member functions
-	template <class Iterator1, class Iterator2>
+	template <typename Iterator1, typename Iterator2>
 	bool operator==(const normal_iterator<Iterator1> &lhs,
 					const normal_iterator<Iterator2> &rhs)
 	{
 		return (lhs.base() == rhs.base());
 	}
 
-	template <class Iterator1, class Iterator2>
+	template <typename Iterator1, typename Iterator2>
 	bool operator!=(const normal_iterator<Iterator1> &lhs,
 					const normal_iterator<Iterator2> &rhs)
 	{
 		return !(lhs == rhs);
 	}
 
-	template <class Iterator1, class Iterator2>
+	template <typename Iterator1, typename Iterator2>
 	bool operator<(const normal_iterator<Iterator1> &lhs,
 				   const normal_iterator<Iterator2> &rhs)
 	{
 		return (lhs.base() < rhs.base());
 	}
 
-	template <class Iterator1, class Iterator2>
+	template <typename Iterator1, typename Iterator2>
 	bool operator<=(const normal_iterator<Iterator1> &lhs,
 					const normal_iterator<Iterator2> &rhs)
 	{
 		return !(rhs < lhs);
 	}
 
-	template <class Iterator1, class Iterator2>
+	template <typename Iterator1, typename Iterator2>
 	bool operator>(const normal_iterator<Iterator1> &lhs,
 				   const normal_iterator<Iterator2> &rhs)
 	{
 		return (rhs < lhs);
 	}
 
-	template <class Iterator1, class Iterator2>
+	template <typename Iterator1, typename Iterator2>
 	bool operator>=(const normal_iterator<Iterator1> &lhs,
 					const normal_iterator<Iterator2> &rhs)
 	{
