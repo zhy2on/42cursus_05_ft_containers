@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 14:40:39 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 22:57:28 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,12 @@ namespace ft
 
 		explicit rbtree_const_iterator(node_ptr x) // initialization
 			: _node(x)
+		{
+		}
+
+		template <typename T>
+		rbtree_const_iterator(const rbtree_iterator<T> &rhs) // copy-constructor
+			: _node(rhs._node)
 		{
 		}
 

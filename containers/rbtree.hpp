@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 22:51:14 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 22:58:29 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,14 @@ namespace ft
 		}
 
 		static bool isTNULL(node_ptr x)
+		{
+			if (x && x->left == NULL)
+				return true;
+			else
+				return false;
+		}
+
+		static bool isTNULL(const_node_ptr x)
 		{
 			if (x && x->left == NULL)
 				return true;
