@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 00:30:13 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 03:56:12 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@
 
 namespace ft
 {
+	template <typename Pair>
+	struct Slect1st
+	{
+		typename Pair::first_type &operator()(Pair &x) const
+		{
+			return x.first;
+		}
+
+		const typename Pair::first_type &operator()(const Pair &x) const
+		{
+			return x.first;
+		}
+	};
+
 	template <typename Key,											  // map::key_type
 			  typename T,											  // map::mapped_type
 			  typename Compare = std::less<Key>,					  // map::key_compare
@@ -49,7 +63,7 @@ namespace ft
 		typedef std::size_t size_type;
 
 	protected:
-		typedef ft::rbtree<key_type, mapped_type, key_compare, allocator_type> tree_type;
+		typedef ft::rbtree<key_type, value_type, Slect1st<value_type>, key_compare, allocator_type> tree_type;
 		typedef typename tree_type::node_type node_type;
 		typedef typename tree_type::node_ptr node_ptr;
 
@@ -79,7 +93,7 @@ namespace ft
 			(void)alloc;
 		}
 
-		template <class InputIterator>
+		template <typename InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		{
 			(void)comp;
@@ -209,7 +223,7 @@ namespace ft
 			return this->insert(val).first;
 		}
 
-		template <class InputIterator>
+		template <typename InputIterator>
 		void insert(
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 			InputIterator last)
@@ -363,43 +377,43 @@ namespace ft
 
 	// Non-member functions
 	// Relational operatiors
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	bool operator==(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
 		return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
 		return !(lhs == rhs);
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
 		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
 		return !(rhs < lhs);
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
 		return rhs < lhs;
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
 		return !(lhs < rhs);
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y)
 	{
 		x.swap(y);

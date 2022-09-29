@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 00:01:04 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 03:51:50 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,17 @@ namespace ft
 	};
 
 	template <typename Key,
-			  typename T,
+			  typename Val,
+			  typename KeyOfValue,
 			  typename Compare = std::less<Key>,
-			  typename Alloc = std::allocator<ft::pair<const Key, T> >
+			  typename Alloc = std::allocator<Val>
 			  >
 	class rbtree
 	{
 	public:
 		// Member types
 		typedef Key key_type;
-		typedef T mapped_type;
-		typedef ft::pair<const key_type, mapped_type> value_type;
+		typedef Val value_type;
 		typedef Compare key_compare;
 		typedef rbtree_node<value_type> node_type;
 		typedef typename node_type::node_allocator_type node_allocator_type;
@@ -139,9 +139,9 @@ namespace ft
 			{
 				return NULL;
 			}
-			while (t != _TNULL && !equal(key, t->data.first))
+			while (t != _TNULL && !equal(key, KeyOfValue()(t->data)))
 			{
-				if (_comp(key, t->data.first))
+				if (_comp(key, KeyOfValue()(t->data)))
 				{
 					t = t->left;
 				}
@@ -259,7 +259,7 @@ namespace ft
 			while (x != _TNULL)
 			{
 				y = x;
-				if (_comp(z->data.first, x->data.first)) // data < x->data
+				if (_comp(KeyOfValue()(z->data), KeyOfValue()(x->data))) // data < x->data
 				{
 					x = x->left;
 				}
@@ -275,7 +275,7 @@ namespace ft
 			{
 				_root = z;
 			}
-			else if (_comp(z->data.first, y->data.first))
+			else if (_comp(KeyOfValue()(z->data), KeyOfValue()(y->data)))
 			{
 				y->left = z;
 			}
