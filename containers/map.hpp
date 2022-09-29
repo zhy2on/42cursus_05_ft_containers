@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 05:48:21 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 13:03:14 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ namespace ft
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		{
-			for (const_iterator it = first; it != last; ++it)
+			for (InputIterator it = first; it != last; ++it)
 			{
 				this->insert(*it);
 			}
