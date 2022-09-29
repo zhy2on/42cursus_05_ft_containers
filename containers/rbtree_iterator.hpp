@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 13:16:24 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 14:40:39 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,6 @@ namespace ft
 				{
 					return node_type::maximum(x->left);
 				}
-				// backup _TNULL
-				node_ptr _TNULL = x->left;
 				// Case 2: up until it came from right
 				while (x->parent)
 				{
@@ -296,8 +294,6 @@ namespace ft
 				{
 					return node_type::maximum(x->left);
 				}
-				// backup _TNULL
-				node_ptr _TNULL = x->left;
 				// Case 2: up until it came from right
 				while (x->parent)
 				{
