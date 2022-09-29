@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 19:32:10 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 19:43:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ namespace ft
 			{
 				return NULL;
 			}
-			while (t != NULL && !_equal(key, t->data.first))
+			while (t != _TNULL && !_equal(key, t->data.first))
 			{
 				if (_comp(key, t->data.first))
 				{
@@ -136,6 +136,10 @@ namespace ft
 				{
 					t = t->right;
 				}
+			}
+			if (t == _TNULL)
+			{
+				return NULL;
 			}
 			return t;
 		}

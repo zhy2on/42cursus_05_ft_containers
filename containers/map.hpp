@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 15:04:00 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 19:43:23 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,8 @@ namespace ft
 		// Element access
 		mapped_type &operator[](const key_type &k)
 		{
-			ft::pair<iterator, bool> ret;
-			ret = this->insert(ft::make_pair(k, mapped_type()));
-			return ret.first->second;
+			this->insert(ft::make_pair(k, mapped_type()));
+			return this->find(k)->second;
 		}
 
 		// Modifiers
@@ -239,9 +238,9 @@ namespace ft
 
 		void erase(iterator first, iterator last)
 		{
-			for (iterator it = first; it != last; ++it)
+			for (iterator it = first++; it != last; it = first++)
 			{
-				this->erase(it);
+				_bst.rbDelete(it._node);
 			}
 		}
 
@@ -272,7 +271,7 @@ namespace ft
 		// Operations
 		iterator find(const key_type &k)
 		{
-			iterator tmp = _bst.searchKey(k);
+			node_ptr tmp = _bst.searchKey(k);
 			if (tmp)
 				return iterator(tmp);
 			else
@@ -281,7 +280,7 @@ namespace ft
 
 		const_iterator find(const key_type &k) const
 		{
-			const_iterator tmp = _bst.searchKey(k);
+			node_ptr tmp = _bst.searchKey(k);
 			if (tmp)
 				return const_iterator(tmp);
 			else
