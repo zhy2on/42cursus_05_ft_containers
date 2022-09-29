@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 14:30:46 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 19:32:10 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,10 @@ namespace ft
 		{
 			node_ptr t = _root;
 
+			if (_root->color == RED)
+			{
+				return NULL;
+			}
 			while (t != NULL && !_equal(key, t->data.first))
 			{
 				if (_comp(key, t->data.first))
@@ -219,6 +223,7 @@ namespace ft
 
 			if (_root->color == RED)
 			{
+				_node_alloc.destroy(_root);
 				_node_alloc.deallocate(_root, 1);
 				_root = z;
 				_root->color = BLACK;
@@ -321,10 +326,7 @@ namespace ft
 			{
 				u->parent->right = v;
 			}
-			if (v != _TNULL)
-			{
-				v->parent = u->parent;
-			}
+			v->parent = u->parent;
 		}
 
 		bool _deleteNode(node_ptr &z)
@@ -362,8 +364,8 @@ namespace ft
 				y->left->parent = y;
 				y->color = z->color;
 			}
+			_node_alloc.destroy(z);
 			_node_alloc.deallocate(z, 1);
-			z = _TNULL;
 			if (y_original_color == BLACK)
 			{
 				_deleteFix(x);
@@ -377,7 +379,6 @@ namespace ft
 			{
 				// if x is left child, side is true else side is false
 				bool side = (x == x->parent->left);
-
 				// set sibling node
 				node_ptr s = side ? x->parent->right : x->parent->left;
 
