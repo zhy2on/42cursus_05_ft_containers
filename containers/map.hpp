@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 19:49:42 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 22:52:47 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,14 +192,14 @@ namespace ft
 		ft::pair<iterator, bool> insert(const value_type &val)
 		{
 			node_ptr tmp = _bst.searchKey(val.first);
-			if (!tmp)
+			if (tmp)
 			{
-				_bst.rbInsert(val);
-				return ft::make_pair(iterator(tmp), true);
+				return ft::make_pair(iterator(tmp), false);
 			}
 			else
 			{
-				return ft::make_pair(iterator(this->end()), false);
+				tmp = _bst.rbInsert(val);
+				return ft::make_pair(iterator(tmp), true);
 			}
 		}
 

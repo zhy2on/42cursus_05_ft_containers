@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 22:31:29 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 22:51:14 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,10 +149,11 @@ namespace ft
 			return t;
 		}
 
-		void rbInsert(const value_type &data)
+		node_ptr rbInsert(const value_type &data)
 		{
-			_insertNode(data);
+			node_ptr ret = _insertNode(data);
 			_TNULL->parent = _root;
+			return ret;
 		}
 
 		void rbDelete(node_ptr &z)
@@ -224,7 +225,7 @@ namespace ft
 			x->parent = y;
 		}
 
-		void _insertNode(const value_type &data)
+		node_ptr _insertNode(const value_type &data)
 		{
 			node_ptr z = _getnode(node_type(NULL, _TNULL, _TNULL, data, RED));
 			node_ptr y = NULL;
@@ -236,7 +237,7 @@ namespace ft
 				_node_alloc.deallocate(_root, 1);
 				_root = z;
 				_root->color = BLACK;
-				return;
+				return z;
 			}
 
 			while (x != _TNULL)
@@ -271,16 +272,17 @@ namespace ft
 			if (z->parent == NULL)
 			{
 				z->color = BLACK;
-				return;
+				return z;
 			}
 
 			// if Z's parent is root node. No need fix up.
 			if (z->parent->parent == NULL)
 			{
-				return;
+				return z;
 			}
 
 			_insertFix(z);
+			return z;
 		}
 
 		void _insertFix(node_ptr k)
