@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 03:51:50 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 04:35:50 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ namespace ft
 			return ret;
 		}
 
-		void rbDelete(node_ptr &z)
+		void rbDelete(const node_ptr &z)
 		{
 			_deleteNode(z);
 			if (_root == _TNULL)
@@ -351,7 +351,7 @@ namespace ft
 			v->parent = u->parent;
 		}
 
-		bool _deleteNode(node_ptr &z)
+		bool _deleteNode(const node_ptr &z)
 		{
 			node_ptr x, y;
 			y = z;
