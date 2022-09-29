@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 19:43:04 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 22:31:29 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,12 @@ namespace ft
 			return _TNULL;
 		}
 
-		node_ptr searchKey(key_type key)
+		bool equal(const key_type &a, const key_type &b) const
+		{
+			return !_comp(a, b) && !_comp(b, a);
+		}
+
+		node_ptr searchKey(key_type key) const
 		{
 			node_ptr t = _root;
 
@@ -126,7 +131,7 @@ namespace ft
 			{
 				return NULL;
 			}
-			while (t != _TNULL && !_equal(key, t->data.first))
+			while (t != _TNULL && !equal(key, t->data.first))
 			{
 				if (_comp(key, t->data.first))
 				{
@@ -309,11 +314,6 @@ namespace ft
 				}
 			}
 			_root->color = BLACK;
-		}
-
-		bool _equal(const key_type &a, const key_type &b)
-		{
-			return !_comp(a, b) && !_comp(b, a);
 		}
 
 		void _rbTransplant(node_ptr u, node_ptr v)
