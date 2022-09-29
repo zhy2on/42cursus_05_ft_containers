@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 14:13:56 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 15:04:00 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,15 @@ namespace ft
 		// Iterators
 		iterator begin()
 		{
+			if (this->empty())
+				return this->end();
 			return (iterator(node_type::minimum(_bst.getRoot())));
 		}
 
 		const_iterator begin() const
 		{
+			if (this->empty())
+				return this->end();
 			return (const_iterator(node_type::minimum(_bst.getRoot())));
 		}
 
@@ -248,13 +252,10 @@ namespace ft
 
 		void clear()
 		{
-			iterator tmp = this->begin();
-			for (iterator it = ++this->begin(); it != this->end(); ++it)
+			while (!this->empty())
 			{
-				this->erase(tmp);
-				tmp = it;
+				this->erase(this->begin());
 			}
-			this->erase(tmp);
 		}
 
 		// Observers
