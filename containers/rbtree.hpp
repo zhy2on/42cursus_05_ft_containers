@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 05:23:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 14:30:46 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ namespace ft
 		typedef node_type *node_ptr;
 		typedef const node_type *const_node_ptr;
 
-		value_type data;
 		node_ptr parent;
 		node_ptr left;
 		node_ptr right;
+		value_type data;
 		int color;
 
 		rbtree_node(node_ptr parent, node_ptr left, node_ptr right, value_type data, int color)
-			: parent(parent), left(left), right(right), color(color), data(data)
+			: parent(parent), left(left), right(right), data(data), color(color)
 		{
 		}
 
@@ -101,7 +101,6 @@ namespace ft
 		typedef typename node_type::const_node_ptr const_node_ptr;
 
 		// Member functions
-		// constructor
 		rbtree()
 		{
 			_TNULL = _getnode(node_type(NULL, NULL, NULL, value_type(), BLACK));
@@ -109,13 +108,11 @@ namespace ft
 			_TNULL->parent = _root;
 		}
 
-		// getRoot
 		const node_ptr &getRoot() const
 		{
 			return _root;
 		}
 
-		// TNULL
 		const node_ptr &getTNULL() const
 		{
 			return _TNULL;
@@ -139,14 +136,12 @@ namespace ft
 			return t;
 		}
 
-		// insertNode
 		void rbInsert(const value_type &data)
 		{
 			_insertNode(data);
 			_TNULL->parent = _root;
 		}
 
-		// deleteNode
 		void rbDelete(node_ptr &z)
 		{
 			_deleteNode(z);
