@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 23:14:11 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 00:30:13 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ namespace ft
 
 		void swap(map &x)
 		{
-			ft::swap(_bst.getRoot(), x._bst.getRoot());
+			_bst.swap(x._bst);
 		}
 
 		void clear()
@@ -301,10 +301,109 @@ namespace ft
 			return n;
 		}
 
+		iterator lower_bound(const key_type &k)
+		{
+			iterator it = this->begin();
+			while (key_comp()(it->first, k) && it != this->end())
+			{
+				++it;
+			}
+			return it;
+		}
+
+		const_iterator lower_bound(const key_type &k) const
+		{
+			const_iterator it = this->begin();
+			while (key_comp()(it->first, k) && it != this->end())
+			{
+				++it;
+			}
+			return it;
+		}
+
+		iterator upper_bound(const key_type &k)
+		{
+			iterator it = this->begin();
+			while (!key_comp()(k, it->first) && it != this->end())
+			{
+				++it;
+			}
+			return it;
+		}
+
+		const_iterator upper_bound(const key_type &k) const
+		{
+			const_iterator it = this->begin();
+			while (!key_comp()(k, it->first) && it != this->end())
+			{
+				++it;
+			}
+			return (it);
+		}
+
+		ft::pair<iterator, iterator> equal_range(const key_type &k)
+		{
+			return ft::make_pair(this->lower_bound(k), this->upper_bound(k));
+		}
+
+		ft::pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+		{
+			return ft::make_pair(this->lower_bound(k), this->upper_bound(k));
+		}
+
+		// Allocator
+		allocator_type get_allocator() const
+		{
+			return allocator_type();
+		}
+
 	private:
 		tree_type _bst;
-		key_compare _comp;
 	};
+
+	// Non-member functions
+	// Relational operatiors
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator==(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{
+		return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{
+		return !(rhs < lhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	void swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y)
+	{
+		x.swap(y);
+	}
 
 } // namespace ft
 

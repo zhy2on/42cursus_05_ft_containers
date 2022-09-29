@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 22:58:29 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 00:01:04 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,14 @@ namespace ft
 				_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
 			}
 			_TNULL->parent = _root;
+		}
+
+		void swap(rbtree &x)
+		{
+			ft::swap(_root, x._root);
+			ft::swap(_TNULL, x._TNULL);
+			ft::swap(_comp, x._comp);
+			ft::swap(_node_alloc, x._node_alloc);
 		}
 
 	private:
