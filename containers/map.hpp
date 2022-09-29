@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/29 22:52:47 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/29 23:14:11 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft
 		typedef std::size_t size_type;
 
 	protected:
-		typedef ft::rbtree<key_type, mapped_type> tree_type;
+		typedef ft::rbtree<key_type, mapped_type, key_compare, allocator_type> tree_type;
 		typedef typename tree_type::node_type node_type;
 		typedef typename tree_type::node_ptr node_ptr;
 
