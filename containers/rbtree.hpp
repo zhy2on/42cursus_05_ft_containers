@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   rbtree.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 05:49:06 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 18:30:40 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBTREE_HPP
 #define RBTREE_HPP
 
+#include "type_traits.hpp"
 #include <functional>  // std::less
 #include <iostream>
-#include "type_traits.hpp"
 
 namespace ft
 {

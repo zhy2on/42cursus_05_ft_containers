@@ -81,7 +81,7 @@ timeSafe () {
 
 printRes () {
 	# 1=file 2=compile 3=bin 4=output 5=std_compile
-	printf "%-35s: COMPILE: %s | RET: %s | OUT: %s | STD: [%s] | FT_TIME: %.9fs | STD_TIME: %.9fs | TIME_SAFE: %s\n" \
+	printf "%-35s: COMPILE: %s | RET: %s | OUT: %s | STD: [%s] | FT_TIME: %.5fs | STD_TIME: %.5fs | TIME_SAFE: %s\n" \
 		"$1" "$(getEmoji $2)" "$(getEmoji $3)" "$(getEmoji $4)" "$(getYN $5)" "$6" "$7" "$(timeSafe $6 $7)"
 }
 
@@ -134,15 +134,15 @@ cmp_one () {
 
 	> $ft_log; > $std_log;
 	if [ $ft_ret -eq 0 ]; then
-		start=$(perl -MTime::HiRes=time -e 'printf "%.9f\n", time')
+		start=$(perl -MTime::HiRes=time -e 'printf "%.5f\n", time')
 		./$ft_bin &>$ft_log; ft_ret=$?
-		finish=$(perl -MTime::HiRes=time -e 'printf "%.9f\n", time')
+		finish=$(perl -MTime::HiRes=time -e 'printf "%.5f\n", time')
 		ft_time=$( echo "$finish - $start" | bc -l )
 	fi
 	if [ $std_ret -eq 0 ]; then
-		start=$(perl -MTime::HiRes=time -e 'printf "%.9f\n", time')
+		start=$(perl -MTime::HiRes=time -e 'printf "%.5f\n", time')
 		./$std_bin &>$std_log; std_ret=$?
-		finish=$(perl -MTime::HiRes=time -e 'printf "%.9f\n", time')
+		finish=$(perl -MTime::HiRes=time -e 'printf "%.5f\n", time')
 		std_time=$( echo "$finish - $start" | bc -l )
 	fi
 	same_bin=$(isEq $ft_ret $std_ret)

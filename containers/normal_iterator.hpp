@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   normal_iterator.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 17:49:33 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 04:56:09 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 18:32:40 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_ITERATOR_HPP
 #define VECTOR_ITERATOR_HPP
 
-#include <cstddef> // std::ptrdiff_t
 #include "iterator_traits.hpp"
+#include <cstddef> // std::ptrdiff_t
 
 namespace ft
 {
@@ -73,7 +73,7 @@ namespace ft
 
 		normal_iterator operator+(difference_type n) const
 		{
-			return (normal_iterator(_current + n));
+			return normal_iterator(_current + n);
 		}
 
 		normal_iterator &operator++()
@@ -97,7 +97,7 @@ namespace ft
 
 		normal_iterator operator-(difference_type n) const
 		{
-			return (normal_iterator(_current - n));
+			return normal_iterator(_current - n);
 		}
 
 		normal_iterator &operator--()
@@ -186,7 +186,7 @@ namespace ft
 		const normal_iterator<Iterator1> &lhs,
 		const normal_iterator<Iterator2> &rhs)
 	{
-		return lhs.base() - rhs.base();
+		return (lhs.base() - rhs.base());
 	}
 }
 

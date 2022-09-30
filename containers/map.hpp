@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 05:54:34 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/09/30 18:32:01 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,14 @@ namespace ft
 		{
 			if (this->empty())
 				return this->end();
-			return (iterator(node_type::minimum(_bst.getRoot())));
+			return iterator(node_type::minimum(_bst.getRoot()));
 		}
 
 		const_iterator begin() const
 		{
 			if (this->empty())
 				return this->end();
-			return (const_iterator(node_type::minimum(_bst.getRoot())));
+			return const_iterator(node_type::minimum(_bst.getRoot()));
 		}
 
 		iterator end()
@@ -154,22 +154,22 @@ namespace ft
 
 		reverse_iterator rbegin()
 		{
-			return (reverse_iterator(end()));
+			return reverse_iterator(end());
 		}
 
 		const_reverse_iterator rbegin() const
 		{
-			return (const_reverse_iterator(end()));
+			return const_reverse_iterator(end());
 		}
 
 		reverse_iterator rend()
 		{
-			return (reverse_iterator(begin()));
+			return reverse_iterator(begin());
 		}
 
 		const_reverse_iterator rend() const
 		{
-			return (const_reverse_iterator(begin()));
+			return const_reverse_iterator(begin());
 		}
 
 		// Capacity
@@ -186,7 +186,7 @@ namespace ft
 		size_type max_size() const
 		{
 			typename tree_type::node_allocator_type _allocator;
-			return ((_allocator.max_size() < PTRDIFF_MAX) ? _allocator.max_size() : PTRDIFF_MAX);
+			return (_allocator.max_size() < PTRDIFF_MAX) ? _allocator.max_size() : PTRDIFF_MAX;
 		}
 
 		// Element access
@@ -346,7 +346,7 @@ namespace ft
 			{
 				++it;
 			}
-			return (it);
+			return it;
 		}
 
 		ft::pair<iterator, iterator> equal_range(const key_type &k)
