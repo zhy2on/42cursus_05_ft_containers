@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 23:11:46 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/05 14:32:06 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,14 +300,14 @@ namespace ft
 			}
 
 			// if Z is root node
-			if (z->parent == NULL)
+			if (z == _root)
 			{
 				z->color = BLACK;
 				return z;
 			}
 
 			// if Z's parent is root node. No need fix up.
-			if (z->parent->parent == NULL)
+			if (z->parent == _root)
 			{
 				return z;
 			}
