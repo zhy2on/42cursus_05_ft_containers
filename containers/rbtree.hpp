@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rbtree.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/10/05 14:32:06 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/07 20:07:45 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,7 @@ namespace ft
 			: _size(0)
 		{
 			_TNULL = _getnode(node_type(NULL, NULL, NULL, value_type(), BLACK));
-			_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
-			_TNULL->parent = _root;
+			_root = _TNULL;
 		}
 
 		const node_ptr &getRoot() const
@@ -161,8 +160,17 @@ namespace ft
 
 		node_ptr rbInsert(const value_type &data)
 		{
+			node_ptr ret;
+			if (_size == 0)
+			{
+				_root = _getnode(node_type(NULL, _TNULL, _TNULL, data, BLACK));
+				ret = _root;
+			}
+			else
+			{
+				ret = _insertNode(data);
+			}
 			++_size;
-			node_ptr ret = _insertNode(data);
 			_TNULL->parent = _root;
 			return ret;
 		}
@@ -171,10 +179,6 @@ namespace ft
 		{
 			--_size;
 			_deleteNode(z);
-			if (_root == _TNULL)
-			{
-				_root = _getnode(node_type(NULL, _TNULL, _TNULL, value_type(), RED));
-			}
 			_TNULL->parent = _root;
 		}
 
@@ -261,15 +265,6 @@ namespace ft
 			node_ptr z = _getnode(node_type(NULL, _TNULL, _TNULL, data, RED));
 			node_ptr y = NULL;
 			node_ptr x = _root;
-
-			if (_root->color == RED)
-			{
-				_node_alloc.destroy(_root);
-				_node_alloc.deallocate(_root, 1);
-				_root = z;
-				_root->color = BLACK;
-				return z;
-			}
 
 			while (x != _TNULL)
 			{
