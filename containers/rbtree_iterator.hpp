@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:59:25 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 18:30:36 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/07 18:06:10 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ namespace ft
 			return tmp;
 		}
 
-		rbtree_const_iterator &operator--()
+		self_type &operator--()
 		{
 			_node = _decrement(_node);
 			return *this;
