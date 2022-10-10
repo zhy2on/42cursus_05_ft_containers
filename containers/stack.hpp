@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 05:05:37 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 05:26:29 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/10 16:20:30 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ namespace ft
 		template <typename T1, typename C1>
 		friend bool operator<(const stack<T1, C1> &x, const stack<T1, C1> &y);
 
-	private:
+	protected:
 		container_type _cont;
 	};
 
