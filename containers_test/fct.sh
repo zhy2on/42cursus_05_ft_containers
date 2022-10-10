@@ -13,7 +13,7 @@ DGREY="\e[1;90m"
 include_path="../containers/"
 srcs="srcs"
 
-CC="clang++"
+CC="c++"
 CFLAGS="-Wall -Wextra -Werror -std=c++98"
 # CFLAGS+=" -fsanitize=address -g3"
 
@@ -167,7 +167,6 @@ do_test () {
 function main () {
 	pheader
 	containers=(vector map stack set)
-	# containers=(vector list map stack queue deque multimap set multiset)
 	if [ $# -ne 0 ]; then
 		containers=($@);
 	fi
