@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 14:41:39 by jihoh             #+#    #+#             */
-/*   Updated: 2022/10/07 20:07:45 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/10 12:58:01 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include "type_traits.hpp"
 #include <functional>  // std::less
-#include <iostream>
 
 namespace ft
 {

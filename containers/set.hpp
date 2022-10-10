@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jihoh <jihoh@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 15:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 23:12:05 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/10 12:58:10 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include "reverse_iterator.hpp"
 #include <functional> // std::less
 #include <cstddef>	  // std::ptrdiff_t, std::size_t
-#include <iostream>
 
 namespace ft
 {
