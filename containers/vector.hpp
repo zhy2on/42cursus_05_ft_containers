@@ -6,7 +6,7 @@
 /*   By: jihoh <jihoh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 01:55:04 by jihoh             #+#    #+#             */
-/*   Updated: 2022/09/30 18:30:52 by jihoh            ###   ########.fr       */
+/*   Updated: 2022/10/11 13:14:24 by jihoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,8 +317,8 @@ namespace ft
 
 		void pop_back()
 		{
-			_allocator.destroy(_data + _size);
 			--_size;
+			_allocator.destroy(_data + _size);
 		}
 
 		iterator insert(iterator position, const value_type &val)
